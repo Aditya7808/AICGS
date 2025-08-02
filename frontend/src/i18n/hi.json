@@ -1,0 +1,65 @@
+{
+  "common": {
+    "welcome": "स्वागत है",
+    "login": "लॉगिन",
+    "signup": "साइन अप",
+    "logout": "लॉगआउट",
+    "submit": "जमा करें",
+    "cancel": "रद्द करें",
+    "next": "अगला",
+    "previous": "पिछला",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता"
+  },
+  "navigation": {
+    "home": "होम",
+    "assessment": "मूल्यांकन",
+    "results": "परिणाम",
+    "profile": "प्रोफाइल"
+  },
+  "hero": {
+    "title": "अपना सही करियर पाथ खोजें",
+    "subtitle": "आपके कौशल, रुचियों और स्थान के अनुकूल AI-संचालित करियर मार्गदर्शन",
+    "cta": "मूल्यांकन शुरू करें",
+    "loginPrompt": "पहले से खाता है?"
+  },
+  "auth": {
+    "username": "उपयोगकर्ता नाम",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "loginTitle": "CareerBuddy में साइन इन करें",
+    "signupTitle": "अपना खाता बनाएं",
+    "loginButton": "साइन इन",
+    "signupButton": "खाता बनाएं",
+    "switchToSignup": "खाता नहीं है? साइन अप करें",
+    "switchToLogin": "पहले से खाता है? साइन इन करें",
+    "loginSuccess": "सफलतापूर्वक लॉगिन हो गए!",
+    "signupSuccess": "खाता सफलतापूर्वक बनाया गया!",
+    "invalidCredentials": "गलत उपयोगकर्ता नाम या पासवर्ड",
+    "userExists": "उपयोगकर्ता पहले से मौजूद है"
+  },
+  "assessment": {
+    "title": "करियर मूल्यांकन",
+    "personalInfo": "व्यक्तिगत जानकारी",
+    "skillsInterests": "कौशल और रुचियां",
+    "age": "उम्र",
+    "location": "स्थान",
+    "skills": "कौशल",
+    "interests": "रुचियां",
+    "skillsPlaceholder": "अपने कौशल चुनें...",
+    "interestsPlaceholder": "अपनी रुचियां चुनें...",
+    "getRecommendations": "सिफारिशें प्राप्त करें"
+  },
+  "results": {
+    "title": "आपकी करियर सिफारिशें",
+    "score": "मैच स्कोर",
+    "demand": "स्थानीय मांग",
+    "retakeAssessment": "मूल्यांकन दोबारा लें"
+  },
+  "language": {
+    "switch": "English",
+    "english": "English",
+    "hindi": "हिंदी"
+  }
+}
