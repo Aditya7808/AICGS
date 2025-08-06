@@ -173,6 +173,12 @@ The frontend will be available at `http://localhost:3000`
 - `GET /recommend/v2/learning-roadmap/{user_id}/{career_id}` - Learning roadmap
 - `GET /recommend/v2/career-readiness/{user_id}/{career_id}` - Career readiness score
 
+### SVM Career Prediction
+- `POST /recommend/v2/svm/predict` - Get SVM predictions for next job, institution, and career outcomes
+- `POST /recommend/v2/svm/train` - Train or retrain SVM models with latest data
+- `GET /recommend/v2/svm/model-info` - Get information about trained SVM models
+- `POST /recommend/v2/hybrid-with-svm` - Enhanced hybrid recommendations with SVM integration
+
 ### Example Enhanced API Request
 ```json
 POST /recommend/v2/hybrid
@@ -241,6 +247,80 @@ POST /recommend/v2/hybrid
 }
 ```
 
+### Example SVM Prediction API Request
+```json
+POST /recommend/v2/svm/predict
+{
+  "user_id": 123,
+  "education_level": "Undergraduate",
+  "current_course": "B.Tech Computer Science",
+  "current_marks_value": 8.5,
+  "current_marks_type": "CGPA",
+  "tenth_percentage": 88.5,
+  "twelfth_percentage": 91.2,
+  "place_of_residence": "Mumbai",
+  "residence_type": "Metro",
+  "family_background": "Middle Income",
+  "interests": "Coding|AI|Gaming",
+  "skills": "Python|Web Development|Problem Solving",
+  "career_goals": "Software Engineering",
+  "language": "en"
+}
+```
+
+### Example SVM Prediction API Response
+```json
+{
+  "user_id": 123,
+  "svm_predictions": {
+    "predictions": {
+      "next_job": "Software Developer",
+      "next_institution": "Tech Company",
+      "career_transition": "Entry Level to Mid Level",
+      "salary_range": "6-10 LPA"
+    },
+    "confidences": {
+      "next_job": 0.87,
+      "next_institution": 0.82,
+      "career_transition": 0.79,
+      "salary_range": 0.84
+    },
+    "insights": {
+      "summary": [
+        "Most likely next job: Software Developer (confidence: 0.87)",
+        "Recommended institution type: Tech Company (confidence: 0.82)",
+        "Expected salary range: 6-10 LPA (confidence: 0.84)"
+      ],
+      "recommendations": [
+        "High confidence predictions - career path is well-aligned with your profile"
+      ],
+      "confidence_analysis": {
+        "overall_confidence": 0.83,
+        "high_confidence_predictions": ["next_job", "salary_range"],
+        "low_confidence_predictions": []
+      },
+      "next_steps": [
+        "Review the predicted career path",
+        "Identify skill gaps for your target role",
+        "Research institutions and companies",
+        "Create a development plan"
+      ]
+    },
+    "model_metadata": {
+      "trained_at": "2025-08-06T10:30:00Z",
+      "training_samples": 1500,
+      "accuracy_scores": {
+        "next_job": 0.89,
+        "next_institution": 0.85,
+        "career_transition": 0.82,
+        "salary_range": 0.87
+      },
+      "model_version": "1.0"
+    }
+  }
+}
+```
+
 ## 🌐 Features
 
 ### Core Functionality
@@ -263,11 +343,22 @@ POST /recommend/v2/hybrid
 - **Social Proof Integration** - Recommendations based on peers' career success
 - **Similarity Scoring** - Multi-dimensional user similarity calculation
 
-#### 3. Hybrid Recommendation Engine
-- **Dynamic Weight Adjustment** - Balances content-based (60%) and collaborative (40%) approaches
+#### 3. SVM Career Predictor (NEW)
+- **Next Job Prediction** - Predicts most likely next job position based on profile
+- **Institution Type Prediction** - Recommends optimal institution types (startups, corporates, etc.)
+- **Career Transition Analysis** - Predicts career progression patterns and timelines
+- **Salary Range Forecasting** - Evidence-based salary expectations for career paths
+- **Multi-Output Classification** - Simultaneous prediction of multiple career outcomes
+- **Confidence Scoring** - Provides prediction confidence levels for decision making
+- **Model Retraining** - Continuous learning from new user data and outcomes
+
+#### 4. Hybrid Recommendation Engine
+- **Dynamic Weight Adjustment** - Balances content-based (50%), collaborative (30%), and SVM (20%) approaches
 - **Confidence Scoring** - Provides confidence levels for each recommendation
+- **SVM-Enhanced Scoring** - Boosts recommendations aligned with SVM predictions
 - **Recommendation Caching** - Performance optimization with intelligent cache invalidation
 
+### Educational Guidance System
 ### Educational Guidance System
 - **Comprehensive Pathway Mapping** - Detailed education pathways for each career
 - **Institution Database** - 500+ institutions with rankings, fees, and placement data
@@ -331,6 +422,7 @@ POST /recommend/v2/hybrid
 - **Content-Based Filtering** - Sophisticated matching algorithms
 - **Collaborative Filtering** - User-based and item-based recommendation systems
 - **Hybrid Systems** - Intelligent combination of multiple recommendation approaches
+- **SVM Career Predictor** - Support Vector Machine model for predicting next job, institution, and career transitions
 - **Training Data Integration** - CSV data processing for model improvement
 
 ## 📝 Environment Variables
@@ -415,10 +507,23 @@ MIN_SIMILAR_USERS = 5
 SIMILARITY_THRESHOLD = 0.7
 PEER_SUCCESS_WEIGHT = 0.6
 
-# Hybrid System Configuration
-CONTENT_WEIGHT = 0.6
-COLLABORATIVE_WEIGHT = 0.4
+# Hybrid System Configuration (Updated with SVM)
+CONTENT_WEIGHT = 0.5
+COLLABORATIVE_WEIGHT = 0.3
+SVM_WEIGHT = 0.2
 CONFIDENCE_THRESHOLD = 0.7
+
+# SVM Model Configuration
+SVM_KERNEL = 'rbf'
+SVM_C_PARAMETER = 1.0
+SVM_GAMMA = 'scale'
+SVM_PROBABILITY = True
+SVM_RANDOM_STATE = 42
+
+# SVM Training Parameters
+SVM_TEST_SIZE = 0.2
+SVM_MIN_TRAINING_SAMPLES = 10
+SVM_CONFIDENCE_THRESHOLD = 0.7
 ```
 
 ## 🧪 Testing & Validation

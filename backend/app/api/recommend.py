@@ -8,8 +8,12 @@ from ..logic.hybrid_recommender import get_hybrid_career_recommendations
 from ..logic.enhanced_matcher import get_enhanced_career_recommendations
 from ..logic.peer_intelligence import PeerIntelligenceSystem
 from ..logic.skill_gap_analyzer import SkillGapAnalyzer
+from ..logic.svm_predictor import SVMCareerPredictor
 from ..db.crud import create_user_profile, get_user_profile, log_user_interaction, save_assessment_history
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/recommend", tags=["recommendations"])
 
@@ -556,3 +560,134 @@ async def test_phase3_implementation(db: Session = Depends(get_db)):
             "error": str(e),
             "error_type": type(e).__name__
         }
+
+# SVM Career Prediction Endpoints
+
+@router.post("/v2/svm/predict", response_model=Dict[str, Any])
+async def predict_career_outcomes(
+    request: EnhancedRecommendationRequest,
+    db: Session = Depends(get_db)
+):
+    """Get SVM-based predictions for next job, institution, and career outcomes"""
+    
+    # Convert request to user profile data
+    user_profile_data = {
+        "education_level": request.education_level,
+        "current_course": request.current_course,
+        "current_institution": request.current_institution,
+        "current_marks_value": request.current_marks_value,
+        "current_marks_type": request.current_marks_type,
+        "tenth_percentage": request.tenth_percentage,
+        "twelfth_percentage": request.twelfth_percentage,
+        "place_of_residence": request.place_of_residence,
+        "residence_type": request.residence_type,
+        "family_background": request.family_background,
+        "interests": request.interests,
+        "skills": request.skills,
+        "career_goals": request.career_goals,
+        "language": request.language
+    }
+    
+    try:
+        # Initialize SVM predictor
+        svm_predictor = SVMCareerPredictor()
+        
+        # Get predictions
+        predictions = svm_predictor.predict_career_outcomes(user_profile_data)
+        
+        # Log interaction
+        log_user_interaction(db, request.user_id, None, 'svm_prediction_request')
+        
+        return {
+            "user_id": request.user_id,
+            "svm_predictions": predictions,
+            "request_timestamp": time.time()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting SVM predictions: {e}")
+        raise HTTPException(status_code=500, detail=f"SVM prediction error: {str(e)}")
+
+@router.post("/v2/svm/train", response_model=Dict[str, Any])
+async def train_svm_models(
+    retrain: bool = False,
+    db: Session = Depends(get_db)
+):
+    """Train or retrain SVM models"""
+    
+    try:
+        # Initialize SVM predictor
+        svm_predictor = SVMCareerPredictor()
+        
+        # Train models
+        training_results = svm_predictor.train_models(db, retrain=retrain)
+        
+        return {
+            "training_status": training_results.get("status"),
+            "training_results": training_results,
+            "model_info": svm_predictor.get_model_info(),
+            "training_timestamp": time.time()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error training SVM models: {e}")
+        raise HTTPException(status_code=500, detail=f"SVM training error: {str(e)}")
+
+@router.get("/v2/svm/model-info", response_model=Dict[str, Any])
+async def get_svm_model_info():
+    """Get information about the trained SVM models"""
+    
+    try:
+        # Initialize SVM predictor
+        svm_predictor = SVMCareerPredictor()
+        
+        # Get model information
+        model_info = svm_predictor.get_model_info()
+        
+        return {
+            "model_info": model_info,
+            "query_timestamp": time.time()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting SVM model info: {e}")
+        raise HTTPException(status_code=500, detail=f"SVM model info error: {str(e)}")
+
+@router.post("/v2/hybrid-with-svm", response_model=Dict[str, Any])
+async def get_hybrid_recommendations_with_svm(
+    request: EnhancedRecommendationRequest, 
+    force_refresh: bool = False,
+    db: Session = Depends(get_db)
+):
+    """Get enhanced hybrid recommendations that include SVM predictions"""
+    
+    # Convert request to user profile data
+    user_profile_data = {
+        "education_level": request.education_level,
+        "current_course": request.current_course,
+        "current_institution": request.current_institution,
+        "current_marks_value": request.current_marks_value,
+        "current_marks_type": request.current_marks_type,
+        "tenth_percentage": request.tenth_percentage,
+        "twelfth_percentage": request.twelfth_percentage,
+        "place_of_residence": request.place_of_residence,
+        "residence_type": request.residence_type,
+        "family_background": request.family_background,
+        "interests": request.interests,
+        "skills": request.skills,
+        "career_goals": request.career_goals,
+        "language": request.language
+    }
+    
+    try:
+        # Use the updated hybrid recommender
+        result = get_hybrid_career_recommendations(db, request.user_id, user_profile_data, force_refresh)
+        
+        # Log interaction
+        log_user_interaction(db, request.user_id, None, 'hybrid_svm_recommendation_request')
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"Error getting hybrid SVM recommendations: {e}")
+        raise HTTPException(status_code=500, detail=f"Hybrid SVM recommendation error: {str(e)}")

@@ -229,6 +229,67 @@ class DataProcessor:
         
         return loaded_counts
 
+    def load_career_data(self, csv_path: Optional[str] = None) -> pd.DataFrame:
+        """Load career training data from CSV files"""
+        try:
+            # Use provided path or try different CSV files
+            csv_files = []
+            if csv_path:
+                csv_files.append(csv_path)
+            else:
+                # Try common CSV file locations
+                csv_files.extend([
+                    self.csv_path,
+                    "data.csv",
+                    "backend/data.csv", 
+                    "backend/svm_training_data.csv",
+                    "../data.csv"
+                ])
+            
+            for csv_file in csv_files:
+                try:
+                    df = pd.read_csv(csv_file)
+                    logger.info(f"Successfully loaded career data from {csv_file}: {len(df)} records")
+                    return df
+                except FileNotFoundError:
+                    continue
+                except Exception as e:
+                    logger.warning(f"Error loading {csv_file}: {e}")
+                    continue
+            
+            # If no CSV file found, create a minimal dataset
+            logger.warning("No CSV training data found, creating minimal default dataset")
+            return self._create_default_training_data()
+            
+        except Exception as e:
+            logger.error(f"Error in load_career_data: {e}")
+            return self._create_default_training_data()
+    
+    def _create_default_training_data(self) -> pd.DataFrame:
+        """Create a minimal default training dataset"""
+        default_data = {
+            'education_level': ['Undergraduate', 'Postgraduate', 'Undergraduate', 'Postgraduate', 'Undergraduate'],
+            'current_course': ['B.Tech Computer Science', 'MBA', 'B.Com', 'M.Tech', 'BCA'],
+            'current_marks_value': [8.5, 8.2, 7.5, 9.0, 8.0],
+            'current_marks_type': ['CGPA', 'CGPA', 'Percentage', 'CGPA', 'CGPA'],
+            'tenth_percentage': [88.5, 90.0, 75.0, 92.0, 85.0],
+            'twelfth_percentage': [91.2, 93.0, 78.0, 95.0, 88.0],
+            'place_of_residence': ['Mumbai', 'Delhi', 'Chennai', 'Bangalore', 'Pune'],
+            'residence_type': ['Metro', 'Metro', 'Metro', 'Metro', 'Metro'],
+            'family_background': ['Middle Income', 'Upper Income', 'Lower Income', 'Upper Income', 'Middle Income'],
+            'interests': ['Coding|AI|Gaming', 'Business|Finance', 'Accounting|Finance', 'Data Science|AI', 'Programming|Web'],
+            'skills': ['Python|Web Development', 'Leadership|Finance', 'Accounting|Tally', 'Python|ML|Statistics', 'Java|Android'],
+            'career_goals': ['Software Engineering', 'Investment Banking', 'Accounting', 'Data Science', 'Software Development'],
+            'next_job': ['Software Developer', 'Financial Analyst', 'Accountant', 'Data Scientist', 'Mobile App Developer'],
+            'next_institution': ['Tech Company', 'Investment Bank', 'CA Firm', 'Tech Company', 'IT Company'],
+            'career_transition': ['Entry Level', 'Mid Level', 'Entry Level', 'Mid Level', 'Entry Level'],
+            'salary_range': ['6-10 LPA', '8-15 LPA', '3-6 LPA', '10-18 LPA', '5-9 LPA']
+        }
+        
+        df = pd.DataFrame(default_data)
+        logger.info(f"Created default training dataset with {len(df)} records")
+        return df
+
 def load_training_data(csv_path: str = "data.csv") -> Dict[str, int]:
     """Main function to load training data"""
     db = SessionLocal()

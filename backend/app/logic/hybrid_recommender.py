@@ -7,23 +7,26 @@ from ..db.crud import (
 from .enhanced_matcher import get_enhanced_career_recommendations, calculate_enhanced_career_match
 from .collaborative_filter import get_collaborative_recommendations, calculate_peer_popularity
 from .feature_engineering import FeatureEngineer
+from .svm_predictor import SVMCareerPredictor
 import logging
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
 class HybridRecommendationEngine:
-    """Hybrid recommendation engine combining content-based and collaborative filtering"""
+    """Hybrid recommendation engine combining content-based, collaborative filtering, and SVM predictions"""
     
     def __init__(self):
         self.feature_engineer = FeatureEngineer()
-        self.content_weight = 0.6  # Weight for content-based filtering
-        self.collaborative_weight = 0.4  # Weight for collaborative filtering
+        self.svm_predictor = SVMCareerPredictor()
+        self.content_weight = 0.5  # Weight for content-based filtering
+        self.collaborative_weight = 0.3  # Weight for collaborative filtering
+        self.svm_weight = 0.2  # Weight for SVM predictions
         
     def get_hybrid_recommendations(self, db: Session, user_id: int, 
                                  user_profile_data: Dict[str, Any],
                                  force_refresh: bool = False) -> Dict[str, Any]:
-        """Get hybrid recommendations combining content-based and collaborative filtering"""
+        """Get hybrid recommendations combining content-based, collaborative filtering, and SVM predictions"""
         
         # Create profile hash for caching
         profile_hash = self.feature_engineer.create_profile_hash(user_profile_data)
@@ -41,20 +44,26 @@ class HybridRecommendationEngine:
         # Get collaborative recommendations
         collaborative_recommendations = get_collaborative_recommendations(db, user_id, user_profile_data)
         
+        # Get SVM predictions
+        svm_predictions = self.svm_predictor.predict_career_outcomes(user_profile_data)
+        
         # Combine recommendations
         hybrid_recommendations = self._combine_recommendations(
             content_recommendations, 
             collaborative_recommendations,
-            user_profile_data
+            user_profile_data,
+            svm_predictions
         )
         
         # Generate final result
         result = {
             'user_id': user_id,
             'recommendations': hybrid_recommendations,
+            'svm_predictions': svm_predictions,
             'algorithm_info': {
                 'content_weight': self.content_weight,
                 'collaborative_weight': self.collaborative_weight,
+                'svm_weight': self.svm_weight,
                 'content_recommendations_count': len(content_recommendations),
                 'collaborative_recommendations_count': len(collaborative_recommendations),
                 'hybrid_recommendations_count': len(hybrid_recommendations)
@@ -69,7 +78,8 @@ class HybridRecommendationEngine:
                 'content_score': self._calculate_avg_content_score(content_recommendations),
                 'collaborative_score': self._calculate_avg_collaborative_score(collaborative_recommendations),
                 'hybrid_score': self._calculate_avg_hybrid_score(hybrid_recommendations),
-                'confidence_level': self._calculate_overall_confidence(hybrid_recommendations)
+                'confidence_level': self._calculate_overall_confidence(hybrid_recommendations),
+                'svm_confidence': svm_predictions.get('confidences', {})
             }
             cache_recommendations(db, profile_hash, result, scores)
         except Exception as e:
@@ -79,8 +89,9 @@ class HybridRecommendationEngine:
     
     def _combine_recommendations(self, content_recs: List[Dict[str, Any]], 
                                collaborative_recs: List[Dict[str, Any]],
-                               user_profile: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Combine content-based and collaborative recommendations"""
+                               user_profile: Dict[str, Any],
+                               svm_predictions: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+        """Combine content-based, collaborative, and SVM recommendations"""
         
         # Create mappings for easier lookup
         content_by_id = {rec['career_id']: rec for rec in content_recs}
@@ -95,24 +106,31 @@ class HybridRecommendationEngine:
             content_rec = content_by_id.get(career_id)
             collaborative_rec = collaborative_by_id.get(career_id)
             
-            # Calculate hybrid score
+            # Calculate base scores
             content_score = content_rec['overall_score'] if content_rec else 0.0
             collaborative_score = collaborative_rec['collaborative_score'] if collaborative_rec else 0.0
             
+            # Calculate SVM boost score
+            svm_boost = self._calculate_svm_boost(career_id, content_rec, svm_predictions)
+            
             # Handle cold start problem - if no collaborative data, rely more on content
             if collaborative_score == 0.0:
-                adjusted_content_weight = 0.8
-                adjusted_collaborative_weight = 0.2
+                adjusted_content_weight = 0.7
+                adjusted_collaborative_weight = 0.1
+                adjusted_svm_weight = 0.2
             else:
                 adjusted_content_weight = self.content_weight
                 adjusted_collaborative_weight = self.collaborative_weight
+                adjusted_svm_weight = self.svm_weight
             
+            # Calculate hybrid score with SVM integration
             hybrid_score = (content_score * adjusted_content_weight + 
-                          collaborative_score * adjusted_collaborative_weight)
+                          collaborative_score * adjusted_collaborative_weight +
+                          svm_boost * adjusted_svm_weight)
             
             # Create combined recommendation
             hybrid_rec = self._create_hybrid_recommendation(
-                career_id, content_rec, collaborative_rec, hybrid_score, user_profile
+                career_id, content_rec, collaborative_rec, hybrid_score, user_profile, svm_predictions
             )
             
             hybrid_recommendations.append(hybrid_rec)
@@ -123,10 +141,57 @@ class HybridRecommendationEngine:
         # Return top 15 recommendations
         return hybrid_recommendations[:15]
     
+    def _calculate_svm_boost(self, career_id: int, content_rec: Optional[Dict[str, Any]], 
+                           svm_predictions: Dict[str, Any]) -> float:
+        """Calculate SVM-based boost score for a career recommendation"""
+        if not svm_predictions or 'predictions' not in svm_predictions:
+            return 0.5  # Neutral boost
+        
+        try:
+            predictions = svm_predictions['predictions']
+            confidences = svm_predictions.get('confidences', {})
+            
+            # Check if this career matches SVM predictions
+            boost_score = 0.5  # Base neutral score
+            
+            # Boost based on predicted next job
+            if content_rec and 'career_name' in content_rec:
+                career_name = content_rec['career_name'].lower()
+                predicted_job = predictions.get('next_job', '').lower()
+                
+                # Simple keyword matching for job alignment
+                if predicted_job in career_name or any(word in career_name for word in predicted_job.split()):
+                    job_confidence = confidences.get('next_job', 0.5)
+                    boost_score += 0.3 * job_confidence
+            
+            # Boost based on predicted career transition
+            predicted_transition = predictions.get('career_transition', '').lower()
+            if 'entry' in predicted_transition:
+                boost_score += 0.1  # Boost entry-level compatible careers
+            elif 'advanced' in predicted_transition:
+                boost_score += 0.2  # Higher boost for advanced careers
+            
+            # Boost based on salary range alignment
+            predicted_salary = predictions.get('salary_range', '')
+            if content_rec and 'career_details' in content_rec:
+                career_salary = content_rec['career_details'].get('average_salary', '')
+                # Simple salary range matching boost
+                if predicted_salary and career_salary:
+                    salary_confidence = confidences.get('salary_range', 0.5)
+                    boost_score += 0.1 * salary_confidence
+            
+            # Ensure boost score is within valid range
+            return max(0.0, min(1.0, boost_score))
+            
+        except Exception as e:
+            logger.warning(f"Error calculating SVM boost: {e}")
+            return 0.5
+    
     def _create_hybrid_recommendation(self, career_id: int, content_rec: Optional[Dict[str, Any]], 
                                     collaborative_rec: Optional[Dict[str, Any]], 
-                                    hybrid_score: float, user_profile: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a hybrid recommendation combining content and collaborative data"""
+                                    hybrid_score: float, user_profile: Dict[str, Any],
+                                    svm_predictions: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Create a hybrid recommendation combining content, collaborative, and SVM data"""
         
         # Base information (prefer content_rec as it has more details)
         base_rec = content_rec if content_rec else collaborative_rec
@@ -143,6 +208,7 @@ class HybridRecommendationEngine:
             'scores': {
                 'content_score': content_rec['overall_score'] if content_rec else 0.0,
                 'collaborative_score': collaborative_rec['collaborative_score'] if collaborative_rec else 0.0,
+                'svm_boost': self._calculate_svm_boost(career_id, content_rec, svm_predictions),
                 'academic_compatibility': content_rec['dimension_scores']['academic_compatibility'] if content_rec else 0.0,
                 'interest_skill_match': content_rec['dimension_scores']['interest_skill_match'] if content_rec else 0.0,
                 'peer_popularity': collaborative_rec['peer_score'] if collaborative_rec else 0.0
@@ -151,8 +217,11 @@ class HybridRecommendationEngine:
             # Career details
             'career_details': base_rec['career_details'],
             
+            # SVM predictions for this career
+            'svm_insights': self._extract_svm_insights(svm_predictions, base_rec),
+            
             # Explanations and insights
-            'why_recommended': self._generate_recommendation_explanation(content_rec, collaborative_rec),
+            'why_recommended': self._generate_recommendation_explanation(content_rec, collaborative_rec, svm_predictions),
             'peer_insights': collaborative_rec['peer_insights'] if collaborative_rec else None,
             'content_explanations': content_rec['explanations'] if content_rec else None,
             
@@ -192,7 +261,8 @@ class HybridRecommendationEngine:
         return min(confidence, 1.0)
     
     def _generate_recommendation_explanation(self, content_rec: Optional[Dict[str, Any]], 
-                                           collaborative_rec: Optional[Dict[str, Any]]) -> List[str]:
+                                           collaborative_rec: Optional[Dict[str, Any]],
+                                           svm_predictions: Dict[str, Any] = None) -> List[str]:
         """Generate explanation for why this career was recommended"""
         explanations = []
         
@@ -218,7 +288,62 @@ class HybridRecommendationEngine:
             if peer_insights['average_rating'] > 7:
                 explanations.append(f"Highly rated ({peer_insights['average_rating']:.1f}/10) by peers")
         
+        # Add SVM-based explanations
+        if svm_predictions and 'predictions' in svm_predictions:
+            predictions = svm_predictions['predictions']
+            confidences = svm_predictions.get('confidences', {})
+            
+            # Check for high-confidence SVM predictions
+            if 'next_job' in predictions and confidences.get('next_job', 0) > 0.7:
+                explanations.append(f"AI model predicts strong fit based on similar career paths")
+            
+            if 'career_transition' in predictions:
+                transition = predictions['career_transition']
+                if confidences.get('career_transition', 0) > 0.6:
+                    explanations.append(f"Predicted career progression: {transition}")
+        
         return explanations[:5]  # Return top 5 explanations
+    
+    def _extract_svm_insights(self, svm_predictions: Dict[str, Any], 
+                            career_rec: Dict[str, Any]) -> Dict[str, Any]:
+        """Extract SVM-specific insights for this career recommendation"""
+        if not svm_predictions or 'predictions' not in svm_predictions:
+            return {}
+        
+        try:
+            predictions = svm_predictions['predictions']
+            confidences = svm_predictions.get('confidences', {})
+            
+            insights = {
+                'predicted_next_job': predictions.get('next_job'),
+                'predicted_institution': predictions.get('next_institution'),
+                'predicted_salary_range': predictions.get('salary_range'),
+                'career_alignment_score': 0.0,
+                'svm_confidence_breakdown': confidences
+            }
+            
+            # Calculate career alignment score
+            career_name = career_rec.get('career_name', '').lower()
+            predicted_job = predictions.get('next_job', '').lower()
+            
+            # Simple alignment scoring
+            alignment_score = 0.0
+            if predicted_job in career_name:
+                alignment_score += 0.4
+            elif any(word in career_name for word in predicted_job.split()):
+                alignment_score += 0.2
+            
+            # Factor in prediction confidence
+            job_confidence = confidences.get('next_job', 0.5)
+            alignment_score += 0.3 * job_confidence
+            
+            insights['career_alignment_score'] = min(1.0, alignment_score)
+            
+            return insights
+            
+        except Exception as e:
+            logger.warning(f"Error extracting SVM insights: {e}")
+            return {}
     
     def _extract_success_indicators(self, content_rec: Optional[Dict[str, Any]], 
                                   collaborative_rec: Optional[Dict[str, Any]]) -> Dict[str, Any]:

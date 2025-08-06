@@ -434,3 +434,33 @@ def update_career_goal_progress(db: Session, goal_id: int, progress_percentage: 
     
     db.commit()
     return db.query(CareerGoal).filter(CareerGoal.id == goal_id).first()
+
+def get_career_outcomes(db: Session, limit: Optional[int] = None):
+    """Get career outcomes for SVM training"""
+    try:
+        query = db.query(CareerOutcome)
+        if limit:
+            query = query.limit(limit)
+        return query.all()
+    except Exception as e:
+        # If CareerOutcome doesn't exist or has issues, return empty list
+        return []
+
+def get_career_outcomes_by_profile(db: Session, profile_data: Dict[str, Any]) -> List[CareerOutcome]:
+    """Get career outcomes similar to the given profile"""
+    try:
+        # Simple matching based on education level and location
+        education_level = profile_data.get('education_level', '')
+        location = profile_data.get('place_of_residence', '')
+        
+        query = db.query(CareerOutcome)
+        
+        if education_level:
+            query = query.filter(CareerOutcome.education_level.ilike(f'%{education_level}%'))
+        
+        if location:
+            query = query.filter(CareerOutcome.place_of_residence.ilike(f'%{location}%'))
+        
+        return query.limit(50).all()
+    except Exception as e:
+        return []
