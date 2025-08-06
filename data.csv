@@ -1,0 +1,108 @@
+,education_level,current_course_of_study,current_institution,place_of_residence,current_marks_type,current_marks_value,next_path,company_name,next_role,placement_status,next_course,next_institution,admission_status,interests,family_background,residence
+0,High School,10th Grade,Zilla Parishad School (Marathi Medium),Maharashtra,Percentage,62.5,Undecided,,,Not Placed Yet,11th Grade (Science),Same School,Applied,Agriculture|Local Crafts|Sports,Lower Income,Rural
+1,Undergraduate,B.Tech (Computer Science),IIT Bombay,Mumbai,CGPA,9.1,Job,Google,Software Engineer,Placed,,,Placed,Coding|AI|Competitive Programming,Upper Income,Metro
+2,High School,12th Grade (Science - PCM),Kendriya Vidyalaya,Delhi,Percentage,88.3,Higher Education,,,Not Placed Yet,B.Tech (Computer Science),IIT Delhi,Applied,Physics|Robotics|JEE Prep,Middle Income,Urban
+3,Intermediate,9th Grade,Govt. Bengali Medium School,West Bengal,Percentage,57.0,Undecided,,,Not Placed Yet,10th Grade,Same School,Applied,Fishing|Local Festivals|Football,Lower Income,Rural
+4,Postgraduate,MBA (Finance),IIM Bangalore,Bangalore,CGPA,8.7,Job,Goldman Sachs,Investment Banker,Placed,,,Placed,Finance|Stock Markets|Debate,Upper Income,Metro
+5,Undergraduate,B.A. (History),Delhi University,Delhi,CGPA,7.2,Higher Education,,,Not Placed Yet,M.A. (History),JNU,Applied,Archaeology|Museums|Writing,Middle Income,Urban
+6,High School,11th Grade (Commerce),Private School (Gujarati Medium),Gujarat,Percentage,75.8,Undecided,,,Not Placed Yet,12th Grade (Commerce - Accounts),Same School,Applied,Family Business|Accounting|Cricket,Middle Income,Semi-Urban
+7,Undergraduate,B.Sc (Agriculture),State Agricultural University,Punjab,CGPA,6.8,Job,Local Agro Firm,Field Officer,Placed,,,Placed,Farming|Soil Science|Rural Dev,Lower Income,Semi-Urban
+8,High School,12th Grade (Vocational - IT),Govt. ITI (Telugu Medium),Andhra Pradesh,Percentage,68.4,Job,Local IT Solutions,Network Technician,Placed,,,Placed,Hardware Repair|Cabling|Gaming,Lower Income,Urban
+9,Postgraduate,M.Sc (Physics),University of Hyderabad,Telangana,CGPA,8.3,Higher Education,,,Not Placed Yet,PhD (Astrophysics),TIFR,Applied,Quantum Mechanics|Research|Teaching,Middle Income,Urban
+10,Undergraduate,B.Com (Hons),SRCC,Delhi,CGPA,9.0,Job,EY,Audit Associate,Placed,,,Placed,CA Prep|Finance|Debate,Upper Income,Metro
+11,High School,8th Grade,Village Public School (Hindi Medium),Bihar,Percentage,48.9,Undecided,,,Not Placed Yet,9th Grade,Same School,Applied,Farming|Local Crafts|Kabaddi,Lower Income,Rural
+12,Undergraduate,B.Tech (Mechanical),NIT Trichy,Tamil Nadu,CGPA,7.9,Job,Tata Motors,Design Engineer,Placed,,,Placed,Automobiles|CAD|Robotics,Middle Income,Semi-Urban
+13,High School,12th Grade (Arts),Rural Convent School (Kannada Medium),Karnataka,Percentage,72.1,Higher Education,,,Not Placed Yet,B.A. (Psychology),Local College,Applied,Counseling|Painting|Social Work,Lower Income,Rural
+14,Postgraduate,M.A. (Economics),Delhi School of Economics,Delhi,Percentage,84.5,Job,World Bank,Research Analyst,Placed,,,Placed,Development Economics|Data Analysis,Upper Income,Metro
+15,Undergraduate,B.Pharm,Private Pharmacy College,Maharashtra,CGPA,6.5,Job,Local Clinic,Pharmacist,Placed,,,Placed,Medicine|Healthcare|Yoga,Middle Income,Urban
+16,High School,10th Grade,Telugu Medium School,Telangana,Percentage,59.7,Undecided,,,Not Placed Yet,11th Grade (Vocational - Electrical),Same School,Applied,Wiring|Motor Repair|Cricket,Lower Income,Rural
+17,Undergraduate,B.Des (Fashion),NIFT Delhi,Delhi,CGPA,8.1,Job,Small Boutique,Fashion Designer,Placed,,,Placed,Sketching|Textiles|Trends,Middle Income,Metro
+18,High School,12th Grade (Science - Biology),Govt. School (Odia Medium),Odisha,Percentage,81.2,Higher Education,,,Not Placed Yet,MBBS,SCB Medical College,Applied,Medicine|Wildlife|Dance,Middle Income,Semi-Urban
+19,Postgraduate,M.Tech (CS),IIT Madras,Chennai,CGPA,9.3,Job,Microsoft,Data Scientist,Placed,,,Placed,ML|Algorithms|Research,Upper Income,Metro
+20,High School,12th Grade (Commerce),Govt. Hindi Medium School,Madhya Pradesh,Percentage,65.2,Undecided,,,Not Placed Yet,B.Com,Local College,Applied,Local Business|Accounting|Cricket,Lower Income,Rural
+21,Undergraduate,B.Tech (Civil Engineering),NIT Warangal,Telangana,CGPA,7.8,Job,L&T Construction,Site Engineer,Placed,,,Placed,Infrastructure|CAD|Project Mgmt,Middle Income,Semi-Urban
+22,Postgraduate,M.Sc (Chemistry),University of Pune,Maharashtra,CGPA,8.0,Higher Education,,,Not Placed Yet,PhD (Organic Chemistry),IISc Bangalore,Applied,Lab Research|Nanotech|Teaching,Middle Income,Urban
+23,High School,9th Grade,Rural Tamil Medium School,Tamil Nadu,Percentage,53.7,Undecided,,,Not Placed Yet,10th Grade,Same School,Applied,Farming|Kabaddi|Folklore,Lower Income,Rural
+24,Undergraduate,BBA,Private Business College,Karnataka,CGPA,6.9,Job,Local Bank,Clerk,Placed,,,Placed,Banking|Family Business|Cricket,Middle Income,Urban
+25,High School,11th Grade (Vocational - Automotive),Govt. ITI (Marathi Medium),Maharashtra,Percentage,61.5,Job,Local Garage,Mechanic,Placed,,,Placed,Engine Repair|Bikes|Welding,Lower Income,Semi-Urban
+26,Undergraduate,B.A. (Political Science),JNU,Delhi,CGPA,8.5,Higher Education,,,Not Placed Yet,M.A. (International Relations),Same Institution,Applied,Debate|Policy|Journalism,Upper Income,Metro
+27,Postgraduate,MCA,VIT Chennai,Tamil Nadu,CGPA,7.6,Job,TCS,Software Developer,Placed,,,Placed,Web Dev|AI|Gaming,Middle Income,Urban
+28,High School,12th Grade (Arts),Bengali Medium School,West Bengal,Percentage,72.8,Higher Education,,,Not Placed Yet,B.A. (Fine Arts),Rabindra Bharati University,Applied,Painting|Pottery|Theater,Middle Income,Semi-Urban
+29,Undergraduate,B.Sc (Nursing),Private Medical College,Kerala,CGPA,7.1,Job,Apollo Hospitals,Nurse,Placed,,,Placed,Patient Care|Biology|Yoga,Middle Income,Urban
+30,High School,10th Grade,Govt. Urdu Medium School,Uttar Pradesh,Percentage,58.3,Undecided,,,Not Placed Yet,11th Grade (Vocational - Textile),Same School,Applied,Tailoring|Embroidery|Cricket,Lower Income,Rural
+31,Undergraduate,B.Tech (ECE),BITS Pilani,Rajasthan,CGPA,8.9,Job,Qualcomm,Hardware Engineer,Placed,,,Placed,IoT|Robotics|Circuit Design,Upper Income,Semi-Urban
+32,Postgraduate,M.A. (Sociology),TISS,Mumbai,Percentage,79.2,Job,NGO (Pratham),Community Officer,Placed,,,Placed,Social Work|Research|Activism,Middle Income,Metro
+33,High School,8th Grade,Tribal Residential School,Jharkhand,Percentage,47.1,Undecided,,,Not Placed Yet,9th Grade,Same School,Applied,Forestry|Archery|Folk Dance,Lower Income,Rural
+34,Undergraduate,B.Com (General),Local College,Punjab,CGPA,5.8,Undecided,,,Not Placed Yet,MBA,Private B-School,Applied,Family Business|Accounting,Lower Income,Semi-Urban
+35,High School,12th Grade (Science - PCB),Govt. School (Odia Medium),Odisha,Percentage,83.4,Higher Education,,,Not Placed Yet,MBBS,SCB Medical College,Applied,Medicine|Wildlife|Dance,Middle Income,Semi-Urban
+36,Undergraduate,B.Arch,SPA Delhi,Delhi,CGPA,8.2,Job,Urban Planning Consultancy,Junior Architect,Placed,,,Placed,Sustainable Design|Sketching,Upper Income,Metro
+37,Postgraduate,M.Sc (Microbiology),University of Mumbai,Maharashtra,CGPA,7.7,Job,Biocon,Research Scientist,Placed,,,Placed,Lab Work|Genetics|Healthcare,Middle Income,Urban
+38,High School,11th Grade (Arts),Rural Convent School (Kannada Medium),Karnataka,Percentage,69.5,Undecided,,,Not Placed Yet,12th Grade (Arts - History),Same School,Applied,Local History|Drama|Painting,Lower Income,Rural
+39,Undergraduate,B.Tech (Mechanical),COE Pune,Maharashtra,CGPA,7.4,Job,Tata Motors,Graduate Engineer,Placed,,,Placed,Automobiles|3D Modeling,Middle Income,Urban
+40,High School,10th Grade,Govt. Sanskrit School,Rajasthan,Percentage,63.8,Undecided,,,Not Placed Yet,11th Grade (Humanities),Same School,Applied,Sanskrit Lit|Yoga|Local History,Lower Income,Rural
+41,Postgraduate,MBA (HR),XLRI Jamshedpur,Jharkhand,CGPA,8.6,Job,TCS,HR Manager,Placed,,,Placed,Recruitment|Employee Relations,Upper Income,Semi-Urban
+42,Undergraduate,B.Sc (Computer Science),Local Degree College,Andhra Pradesh,CGPA,6.3,Job,Local IT Solutions,Support Technician,Placed,,,Placed,Networking|Hardware Repair,Lower Income,Urban
+43,High School,12th Grade (Vocational - Healthcare),Govt. ITI (Hindi Medium),Bihar,Percentage,71.0,Job,Local Clinic,Lab Assistant,Placed,,,Placed,First Aid|Patient Care,Lower Income,Semi-Urban
+44,Undergraduate,B.A. (Economics),Presidency College,West Bengal,CGPA,8.7,Higher Education,,,Not Placed Yet,M.A. (Development Economics),Delhi School of Economics,Applied,Policy|Data Analysis|Debate,Middle Income,Urban
+45,High School,9th Grade,Telugu Medium School,Telangana,Percentage,55.9,Undecided,,,Not Placed Yet,10th Grade,Same School,Applied,Farming|Cricket|Folklore,Lower Income,Rural
+46,Undergraduate,B.Tech (Chemical),ICT Mumbai,Maharashtra,CGPA,8.1,Job,Reliance Industries,Process Engineer,Placed,,,Placed,Petrochemicals|Safety Mgmt,Upper Income,Metro
+47,Postgraduate,M.Sc (Statistics),ISI Kolkata,West Bengal,CGPA,9.0,Job,JP Morgan,Data Analyst,Placed,,,Placed,Quant Modeling|Finance,Upper Income,Urban
+48,High School,11th Grade (Science),Navodaya Vidyalaya,Karnataka,Percentage,77.6,Undecided,,,Not Placed Yet,12th Grade (Science - PCM),Same School,Applied,Astronomy|Robotics|Math,Middle Income,Semi-Urban
+49,Undergraduate,B.Com (Finance),St. Xavier's College,Mumbai,CGPA,7.9,Job,KPMG,Audit Associate,Placed,,,Placed,CA Prep|Investment|Excel,Upper Income,Metro
+50,High School,12th Grade (Commerce - Math),Private School,Gujarat,Percentage,85.2,Higher Education,,,Not Placed Yet,BBA,NMIMS Mumbai,Applied,Entrepreneurship|Stock Markets,Middle Income,Urban
+51,Postgraduate,M.Tech (Aerospace),IISc Bangalore,Karnataka,CGPA,9.2,Job,ISRO,Scientist/Engineer,Placed,,,Placed,Rocketry|Fluid Dynamics,Upper Income,Metro
+52,Undergraduate,B.Sc (Agriculture),PAU Ludhiana,Punjab,CGPA,7.3,Job,Nestle,Quality Officer,Placed,,,Placed,Food Safety|Agri Tech,Middle Income,Semi-Urban
+53,High School,8th Grade,Tribal Ashram School,Chhattisgarh,Percentage,42.8,Undecided,,,Not Placed Yet,9th Grade,Same School,Applied,Forest Produce|Archery,Lower Income,Rural
+54,Undergraduate,B.A. (Journalism),Jamia Millia Islamia,Delhi,CGPA,7.5,Job,Times of India,Reporter,Placed,,,Placed,Writing|Photography|Politics,Middle Income,Metro
+55,High School,12th Grade (Vocational - IT Networking),Govt. Polytechnic,Tamil Nadu,Percentage,73.1,Job,Local ISP,Network Assistant,Placed,,,Placed,Cabling|Router Config,Lower Income,Urban
+56,Postgraduate,M.Sc (Biotech),University of Hyderabad,Telangana,CGPA,8.4,Job,Serum Institute,Bioprocess Engineer,Placed,,,Placed,Vaccine Research|Lab Work,Middle Income,Urban
+57,Undergraduate,B.Tech (IT),VIT Vellore,Tamil Nadu,CGPA,7.8,Job,Infosys,System Engineer,Placed,,,Placed,Cloud Computing|Cybersecurity,Middle Income,Semi-Urban
+58,High School,10th Grade,Govt. Urdu Medium School,Jammu,Percentage,59.1,Undecided,,,Not Placed Yet,11th Grade (Vocational - Carpentry),Same School,Applied,Woodwork|Calligraphy,Lower Income,Rural
+59,Undergraduate,BDS,Private Dental College,Kerala,CGPA,6.9,Job,Local Clinic,Dentist,Placed,,,Placed,Oral Health|Surgery,Middle Income,Urban
+60,High School,12th Grade (Science - Computer Science),Private School,Karnataka,Percentage,91.3,Higher Education,,,Not Placed Yet,B.Tech (CS),BITS Pilani,Applied,AI|Competitive Coding,Upper Income,Urban
+61,Postgraduate,M.A. (English),St. Stephen's College,Delhi,CGPA,8.8,Job,Publishing House,Content Editor,Placed,,,Placed,Creative Writing|Poetry,Upper Income,Metro
+62,Undergraduate,B.Sc (Physics),Fergusson College,Maharashtra,CGPA,7.6,Higher Education,,,Not Placed Yet,M.Sc (Physics),IIT Kanpur,Applied,Quantum Theory|Astrophysics,Middle Income,Urban
+63,High School,11th Grade (Vocational - Electrical),Govt. ITI (Hindi Medium),Uttar Pradesh,Percentage,64.7,Job,Local Electrician,Apprentice,Placed,,,Placed,Wiring|Motor Repair,Lower Income,Semi-Urban
+64,Undergraduate,BBA,Christ University,Bangalore,CGPA,8.3,Job,Flipkart,Operations Manager,Placed,,,Placed,E-commerce|Logistics,Upper Income,Metro
+65,High School,12th Grade (Humanities),Rural Convent School,Kerala,Percentage,70.5,Higher Education,,,Not Placed Yet,B.A. (Sociology),Local College,Applied,Social Issues|Dance,Lower Income,Rural
+66,Postgraduate,M.Tech (Data Science),IIIT Bangalore,Karnataka,CGPA,9.1,Job,Amazon,Data Scientist,Placed,,,Placed,ML|Big Data,Upper Income,Metro
+67,Undergraduate,B.A. (Economics),Ashoka University,Haryana,CGPA,8.9,Job,McKinsey,Consultant,Placed,,,Placed,Policy|Case Studies,Upper Income,Semi-Urban
+68,High School,9th Grade,Govt. Tamil Medium School,Puducherry,Percentage,51.2,Undecided,,,Not Placed Yet,10th Grade,Same School,Applied,Fishing|Dance|Cricket,Lower Income,Rural
+69,Undergraduate,B.Tech (EEE),NIT Calicut,Kerala,CGPA,7.7,Job,Siemens,Control Engineer,Placed,,,Placed,Automation|PLC Programming,Middle Income,Semi-Urban
+70,High School,12th Grade (Science - PCM),Jawahar Navodaya Vidyalaya,Madhya Pradesh,Percentage,89.2,Higher Education,,,Not Placed Yet,B.Tech (Aerospace),IIT Madras,Applied,Space Tech|Astronomy|Robotics,Middle Income,Semi-Urban
+71,Undergraduate,B.Sc (Forestry),Forest Research Institute,Uttarakhand,CGPA,7.5,Job,WWF India,Conservation Officer,Placed,,,Placed,Wildlife|Ecology|Field Work,Middle Income,Semi-Urban
+72,Postgraduate,M.Tech (Robotics),IIT Kanpur,Uttar Pradesh,CGPA,9.0,Job,Tesla,Robotics Engineer,Placed,,,Placed,AI|Automation|Control Systems,Upper Income,Urban
+73,High School,10th Grade,Govt. Tribal School,Chhattisgarh,Percentage,49.3,Undecided,,,Not Placed Yet,11th Grade (Vocational - Carpentry),Same School,Applied,Woodwork|Bamboo Craft|Archery,Lower Income,Rural
+74,Undergraduate,B.A. (Film Studies),Whistling Woods International,Maharashtra,CGPA,7.8,Job,Bollywood Production House,Assistant Director,Placed,,,Placed,Cinematography|Scriptwriting,Upper Income,Metro
+75,High School,12th Grade (Commerce - Accounts),Private School (Gujarati Medium),Gujarat,Percentage,78.4,Higher Education,,,Not Placed Yet,B.Com (Hons),NMIMS Mumbai,Applied,CA Prep|Stock Markets,Middle Income,Urban
+76,Undergraduate,B.Tech (Biomedical),VIT Vellore,Tamil Nadu,CGPA,8.2,Job,Medtronic,Medical Device Engineer,Placed,,,Placed,Healthcare Tech|Lab Research,Middle Income,Semi-Urban
+77,Postgraduate,M.Sc (Geology),IIT (ISM) Dhanbad,Jharkhand,CGPA,8.6,Job,ONGC,Geologist,Placed,,,Placed,Mineral Exploration|Field Surveys,Upper Income,Semi-Urban
+78,High School,9th Grade,Rural Ashram School (Odia Medium),Odisha,Percentage,46.8,Undecided,,,Not Placed Yet,10th Grade,Same School,Applied,Fishing|Traditional Dance,Lower Income,Rural
+79,Undergraduate,B.Pharm,BITS Pilani,Rajasthan,CGPA,8.7,Job,Dr. Reddy's Labs,Drug Formulation Specialist,Placed,,,Placed,Pharma Research|Healthcare,Upper Income,Semi-Urban
+80,High School,11th Grade (Vocational - Agriculture),Krishi Vigyan Kendra,Karnataka,Percentage,67.3,Job,Local Agri Co-op,Field Assistant,Placed,,,Placed,Organic Farming|Soil Testing,Lower Income,Rural
+81,Undergraduate,B.Des (Product),NID Ahmedabad,Gujarat,CGPA,8.4,Job,Apple,Product Designer,Placed,,,Placed,UX Design|Prototyping,Upper Income,Urban
+82,Postgraduate,MBA (Operations),IIM Calcutta,West Bengal,CGPA,8.9,Job,Amazon,Supply Chain Manager,Placed,,,Placed,Logistics|Process Optimization,Upper Income,Metro
+83,High School,12th Grade (Arts - Psychology),Rural Convent School,Kerala,Percentage,71.9,Higher Education,,,Not Placed Yet,B.A. (Psychology),Local College,Applied,Counseling|Mental Health,Lower Income,Rural
+86,Postgraduate,M.A. (Public Policy),Ashoka University,Haryana,CGPA,8.8,Job,NITI Aayog,Policy Analyst,Placed,,,Placed,Governance|Data Analysis,Upper Income,Semi-Urban
+87,Undergraduate,B.Sc (Horticulture),PAU Ludhiana,Punjab,CGPA,6.9,Job,Local Nursery,Horticulturist,Placed,,,Placed,Gardening|Plant Breeding,Lower Income,Semi-Urban
+91,Undergraduate,B.Tech (Metallurgy),IIT BHU,Uttar Pradesh,CGPA,8.3,Job,Tata Steel,Metallurgist,Placed,,,Placed,Material Science|Quality Control,Upper Income,Urban
+320,High School,10th Grade,Kendriya Vidyalaya,Delhi,Percentage,82.5,Undecided,,,Not Placed Yet,11th Grade (Science),Same School,Applied,Science|Computers|Sports|Reading,Middle Income,Urban
+321,Undergraduate,B.Tech (Computer Science),IIT Bombay,Mumbai,CGPA,8.9,Job,Google,Software Engineer,Placed,,,Placed,Coding|AI/ML|Problem Solving|Gaming,Upper Income,Metro
+322,Postgraduate,M.Sc (Physics),University of Delhi,Delhi,Percentage,76.0,Higher Education,,,Not Placed Yet,PhD (Astrophysics),TIFR Mumbai,Applied,Research|Cosmology|Teaching|Music,Middle Income,Urban
+323,High School,12th Grade (Science - Math),DPS Bangalore,Bangalore,Percentage,91.2,Higher Education,,,Not Placed Yet,B.Tech (Computer Science),IIT Delhi,Applied,Engineering|Mathematics|Physics|Innovation,Upper Income,Metro
+324,Undergraduate,B.A. (English Literature),St. Stephen's College,Delhi,CGPA,7.8,Higher Education,,,Not Placed Yet,M.A. (English Literature),Oxford University,Applied,Literary Criticism|Creative Writing|Teaching,Upper Income,Urban
+325,Intermediate,9th Grade,St. Mary's School,Chennai,Percentage,78.3,Undecided,,,Not Placed Yet,10th Grade,Same School,Applied,Sports|Drawing|Local History|Reading,Middle Income,Semi-Urban
+326,Postgraduate,MBA (Marketing),IIM Bangalore,Bangalore,CGPA,8.5,Job,Unilever,Brand Manager,Placed,,,Placed,Marketing Strategy|Leadership|Networking,Upper Income,Metro
+327,High School,12th Grade (Commerce),SRM University,Chennai,Percentage,85.6,Higher Education,,,Not Placed Yet,B.Com (Hons),Delhi University,Applied,Finance|Entrepreneurship|Debate,Middle Income,Urban
+328,Undergraduate,B.Sc (Biotechnology),VIT Vellore,Vellore,CGPA,8.1,Higher Education,,,Not Placed Yet,M.Sc (Biotechnology),IISc Bangalore,Applied,Genetics|Lab Work|Research,Upper Income,Semi-Urban
+329,High School,11th Grade (Science),FIITJEE Coaching,Delhi,Percentage,89.7,Undecided,,,Not Placed Yet,12th Grade (Science - PCM),Same Institution,Applied,JEE Preparation|Physics|Mathematics,Middle Income,Metro
+330,Undergraduate,B.Arch (Architecture),CEPT University,Ahmedabad,CGPA,7.9,Job,Architectural Design Studio,Junior Architect,Placed,,,Placed,Design|Urban Planning|Sketching,Upper Income,Urban
+331,Postgraduate,M.Tech (Environmental Engineering),IIT Bombay,Mumbai,CGPA,8.7,Job,TERI,Environmental Consultant,Placed,,,Placed,Sustainability|Climate Change|Research,Upper Income,Metro
+332,High School,12th Grade (Vocational - IT),ITI Pune,Pune,Percentage,72.4,Job,Local IT Solutions,IT Support Technician,Placed,,,Placed,Networking|Hardware|Troubleshooting,Lower Income,Urban
+333,Undergraduate,B.Pharm (Pharmacy),Jamia Hamdard,Delhi,CGPA,7.6,Higher Education,,,Not Placed Yet,M.Sc (Pharmaceutical Sciences),Same Institution,Applied,Drug Discovery|Healthcare|Research,Middle Income,Metro
+334,Intermediate,8th Grade,Village Public School,Bihar,Percentage,65.8,Undecided,,,Not Placed Yet,9th Grade,Same School,Applied,Farming|Local Crafts|Sports,Lower Income,Rural
+335,Postgraduate,M.A. (Economics),Delhi School of Economics,Delhi,Percentage,81.3,Job,World Bank,Research Analyst,Placed,,,Placed,Economic Policy|Data Analysis|Debate,Upper Income,Metro
+336,Undergraduate,BBA (Business Administration),Symbiosis College,Pune,CGPA,8.4,Job,Reliance Retail,Management Trainee,Placed,,,Placed,Business|Leadership|Public Speaking,Upper Income,Urban
+337,High School,12th Grade (Arts),Lady Shri Ram College,Delhi,Percentage,79.5,Higher Education,,,Not Placed Yet,B.A. (Psychology),Same Institution,Applied,Human Behavior|Counseling|Reading,Middle Income,Metro
+338,Undergraduate,B.Tech (Electrical Engineering),NIT Warangal,Warangal,CGPA,8.2,Job,Siemens,Project Engineer,Placed,,,Placed,Circuit Design|Automation|Robotics,Upper Income,Semi-Urban
+339,Postgraduate,M.Sc (Mathematics),Indian Statistical Institute,Kolkata,Percentage,88.9,Higher Education,,,Not Placed Yet,PhD (Pure Mathematics),Same Institution,Applied,Abstract Math|Research|Teaching,Middle Income,Urban

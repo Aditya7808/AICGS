@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 
@@ -7,6 +7,7 @@ const Login: React.FC = () => {
   const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   
   const [formData, setFormData] = useState({
     username: '',
@@ -14,6 +15,16 @@ const Login: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    // Check for success message from signup
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message);
+      // Clear the message from history state
+      window.history.replaceState(null, '');
+    }
+  }, [location]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +34,14 @@ const Login: React.FC = () => {
     try {
       await login(formData.username, formData.password);
       navigate('/');
-    } catch (err) {
-      setError(t('auth.invalidCredentials') as string);
+    } catch (err: any) {
+      console.error('Login error:', err);
+      // Show the actual error message from the backend
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError('Login failed. Please check your credentials.');
+      }
     } finally {
       setLoading(false);
     }
@@ -55,6 +72,17 @@ const Login: React.FC = () => {
       <div className="relative z-10 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white/80 backdrop-blur-sm py-10 px-8 shadow-xl border border-gray-100 sm:rounded-2xl">
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {successMessage && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg animate-slide-up">
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  {successMessage}
+                </div>
+              </div>
+            )}
+            
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg animate-slide-up">
                 <div className="flex items-center">
@@ -68,7 +96,7 @@ const Login: React.FC = () => {
             
             <div>
               <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
-                {t('auth.username')}
+                Username or Email
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -84,7 +112,7 @@ const Login: React.FC = () => {
                   value={formData.username}
                   onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
                   className="input-field pl-10 text-lg"
-                  placeholder="Enter your username"
+                  placeholder="Enter your username or email"
                 />
               </div>
             </div>

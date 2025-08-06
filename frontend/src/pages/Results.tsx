@@ -3,13 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import ResultCard from '../components/ResultCard';
-import { RecommendationResponse } from '../services/api';
+import PeerIntelligence from '../components/PeerIntelligence';
+import SkillGapAnalyzer from '../components/SkillGapAnalyzer';
+import { RecommendationResponse, PeerIntelligenceResponse, SkillGapResponse, recommendationAPI } from '../services/api';
+import { GraduationCap } from 'lucide-react';
 
 const Results: React.FC = () => {
   const { t } = useTranslation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const [results, setResults] = useState<RecommendationResponse | null>(null);
+  const [activeTab, setActiveTab] = useState<'recommendations' | 'peer-intelligence' | 'skill-gaps'>('recommendations');
+  const [peerData, setPeerData] = useState<PeerIntelligenceResponse | null>(null);
+  const [skillGapData, setSkillGapData] = useState<SkillGapResponse | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -25,6 +32,66 @@ const Results: React.FC = () => {
       navigate('/assessment');
     }
   }, [isAuthenticated, navigate]);
+
+  // Load Phase 3 data when user is available
+  useEffect(() => {
+    const loadPhase3Data = async () => {
+      if (!user?.id) return;
+      
+      try {
+        setLoading(true);
+        // Load peer intelligence data
+        if (activeTab === 'peer-intelligence' && !peerData) {
+          const peerResponse = await recommendationAPI.getPeerIntelligence(user.id);
+          setPeerData(peerResponse);
+        }
+        // Load skill gap data 
+        if (activeTab === 'skill-gaps' && !skillGapData) {
+          // For demo, we'll use mock data - in real app you'd have the actual career IDs
+          const mockRequest = {
+            user_id: user.id,
+            target_career_id: 1,
+            current_skills: ['Python', 'Web Development'],
+            current_education_level: 'Undergraduate'
+          };
+          const skillResponse = await recommendationAPI.analyzeSkillGap(mockRequest);
+          setSkillGapData(skillResponse);
+        }
+      } catch (error) {
+        console.error('Error loading Phase 3 data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPhase3Data();
+  }, [activeTab, user, peerData, skillGapData]);
+
+  if (!isAuthenticated || !results) {
+    return null;
+  }
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'peer-intelligence':
+        return user?.id ? <PeerIntelligence userId={user.id} /> : <div>Please log in to view peer intelligence</div>;
+      case 'skill-gaps':
+        return user?.id ? <SkillGapAnalyzer userId={user.id} /> : <div>Please log in to view skill gap analysis</div>;
+      default:
+        return (
+          <div className="space-y-6">
+            {results.matches.map((match, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden hover:shadow-medium transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <ResultCard match={match} />
+              </div>
+            ))}
+          </div>
+        );
+    }
+  };
 
   if (!isAuthenticated || !results) {
     return null;
@@ -56,7 +123,13 @@ const Results: React.FC = () => {
               🎯 AI-Powered Matching
             </span>
             <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-              📍 Location-Based
+              � Peer Intelligence
+            </span>
+            <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+              📈 Skill Gap Analysis
+            </span>
+            <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+              �📍 Location-Based
             </span>
           </div>
         </div>
@@ -89,7 +162,7 @@ const Results: React.FC = () => {
         <div className="mb-12">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900">
-              Your Career Recommendations
+              Your Career Analysis
             </h2>
             <Link
               to="/assessment"
@@ -102,15 +175,54 @@ const Results: React.FC = () => {
             </Link>
           </div>
 
-          <div className="space-y-6">
-            {results.matches.map((match, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden hover:shadow-medium transition-all duration-300 transform hover:-translate-y-1"
+          {/* Tab Navigation */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
+            <div className="flex border-b border-gray-200">
+              <button
+                onClick={() => setActiveTab('recommendations')}
+                className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-200 ${
+                  activeTab === 'recommendations'
+                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                }`}
               >
-                <ResultCard match={match} />
+                🎯 Career Matches
+              </button>
+              <button
+                onClick={() => setActiveTab('peer-intelligence')}
+                className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-200 ${
+                  activeTab === 'peer-intelligence'
+                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                👥 Peer Intelligence
+              </button>
+              <button
+                onClick={() => setActiveTab('skill-gaps')}
+                className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-200 ${
+                  activeTab === 'skill-gaps'
+                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                📈 Skill Analysis
+              </button>
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          <div className="min-h-[400px]">
+            {loading ? (
+              <div className="flex justify-center items-center py-16">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <div className="text-gray-500">Loading analysis...</div>
+                </div>
               </div>
-            ))}
+            ) : (
+              renderTabContent()
+            )}
           </div>
         </div>
 
@@ -147,9 +259,13 @@ const Results: React.FC = () => {
               connect with professionals, and start building your future today.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <button className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200">
-                Explore Courses
-              </button>
+              <Link
+                to={`/education/${results.matches.map((_, index) => index + 1).join(',')}`}
+                className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200 flex items-center gap-2"
+              >
+                <GraduationCap className="w-5 h-5" />
+                Education Pathways
+              </Link>
               <button className="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors duration-200 border border-white/30">
                 Find Mentors
               </button>

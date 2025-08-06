@@ -1,0 +1,1 @@
+conda run -p /home/amartya/Desktop/aicgs/careerbuddy/backend/venv pip install fastapi uvicorn sqlalchemy python-jose[cryptography] passlib[bcrypt] python-multipart pydantic pandas numpy scikit-learn

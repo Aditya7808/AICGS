@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Assessment from './pages/Assessment';
 import Results from './pages/Results';
+import ProgressDashboard from './pages/ProgressDashboard';
+import EducationPathwaysPage from './pages/EducationPathwaysPage';
 import './i18n';
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/assessment" element={<Assessment />} />
             <Route path="/results" element={<Results />} />
+            <Route path="/progress" element={<ProgressDashboard />} />
+            <Route path="/education/:careerIds" element={<EducationPathwaysPage />} />
           </Routes>
         </div>
       </Router>

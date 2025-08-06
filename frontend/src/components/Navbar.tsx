@@ -52,6 +52,12 @@ const Navbar: React.FC = () => {
                 >
                   {t('navigation.results')}
                 </Link>
+                <Link
+                  to="/progress"
+                  className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-50"
+                >
+                  Progress
+                </Link>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
                     <span className="text-white font-semibold text-sm">
