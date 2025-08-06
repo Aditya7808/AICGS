@@ -1,140 +1,148 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 
 const Hero: React.FC = () => {
-  const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 overflow-hidden">
+    <section className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-secondary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-accent-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '4s'}}></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{animationDelay: '4s'}}></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
-        <div className="text-center space-y-8">
-          {/* Main headline */}
-          <div className="space-y-4 animate-fade-in">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight">
-              <span className="block text-gray-900">Discover Your</span>
-              <span className="block gradient-text">Perfect Career</span>
-              <span className="block text-gray-900">Path</span>
-            </h1>
-            <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              {t('hero.subtitle')}
-            </p>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen">
+          {/* Left Content */}
+          <div className="space-y-8">
+            {/* Main headline */}
+            <div className="space-y-6 animate-fade-in">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+                <span className="block text-gray-900">Learn New Skills</span>
+                <span className="block text-gray-900">Online with</span>
+                <span className="block text-primary-600">Top Educators</span>
+              </h1>
+              <p className="text-xl text-gray-600 max-w-lg leading-relaxed">
+                Get certificates, degrees and specializations from world-class universities and companies
+              </p>
+            </div>
 
-          {/* Feature highlights */}
-          <div className="flex flex-wrap justify-center gap-4 text-sm font-medium animate-slide-up" style={{animationDelay: '0.2s'}}>
-            <span className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-soft">
-              🤖 AI-Powered Matching
-            </span>
-            <span className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-soft">
-              🌍 Location-Based
-            </span>
-            <span className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-soft">
-              📊 Personalized Results
-            </span>
-            <span className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-soft">
-              🔄 Multi-language
-            </span>
-          </div>
-
-          {/* CTA Section */}
-          <div className="space-y-6 animate-slide-up" style={{animationDelay: '0.4s'}}>
-            {isAuthenticated ? (
-              <Link
-                to="/assessment"
-                className="inline-flex items-center bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-large hover:shadow-xl transform hover:-translate-y-1 group"
-              >
-                {t('hero.cta')}
-                <svg className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
-            ) : (
-              <div className="space-y-4">
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{animationDelay: '0.2s'}}>
+              {isAuthenticated ? (
                 <Link
-                  to="/signup"
-                  className="inline-flex items-center bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-large hover:shadow-xl transform hover:-translate-y-1 group"
+                  to="/assessment"
+                  className="inline-flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
-                  {t('hero.cta')}
-                  <svg className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                  Start Assessment
                 </Link>
-                <p className="text-gray-600">
-                  {t('hero.loginPrompt')}{' '}
-                  <Link to="/login" className="text-primary-600 hover:text-primary-700 font-semibold underline underline-offset-2">
-                    {t('common.login')}
+              ) : (
+                <>
+                  <Link
+                    to="/signup"
+                    className="inline-flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  >
+                    Join for Free
                   </Link>
-                </p>
+                  <Link
+                    to="/assessment"
+                    className="inline-flex items-center justify-center border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300"
+                  >
+                    Find Courses
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-8 pt-8 animate-slide-up" style={{animationDelay: '0.4s'}}>
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-2">
+                  <svg className="w-6 h-6 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                  <span className="text-2xl font-bold text-primary-600">12M+</span>
+                </div>
+                <div className="text-gray-600 text-sm">Students</div>
               </div>
-            )}
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-2">
+                  <svg className="w-6 h-6 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                  <span className="text-2xl font-bold text-primary-600">60K+</span>
+                </div>
+                <div className="text-gray-600 text-sm">Courses</div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-2">
+                  <svg className="w-6 h-6 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  <span className="text-2xl font-bold text-primary-600">∞</span>
+                </div>
+                <div className="text-gray-600 text-sm">Learn anything</div>
+              </div>
+            </div>
           </div>
 
-          {/* Stats section */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 animate-slide-up" style={{animationDelay: '0.6s'}}>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600">1000+</div>
-              <div className="text-gray-600">Career Paths</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600">95%</div>
-              <div className="text-gray-600">Accuracy Rate</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600">50K+</div>
-              <div className="text-gray-600">Happy Users</div>
-            </div>
-          </div>
-        </div>
+          {/* Right Content - Animated Cards */}
+          <div className="relative animate-slide-up" style={{animationDelay: '0.6s'}}>
+            <div className="relative mx-auto max-w-md">
+              {/* Instructor Card */}
+              <div className="absolute top-0 right-0 bg-white rounded-xl shadow-lg p-4 z-20 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">AT</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 text-sm">Ali Tufan</h4>
+                    <p className="text-gray-500 text-xs">Instructor</p>
+                  </div>
+                </div>
+                <div className="mt-2 flex items-center">
+                  <div className="flex text-yellow-400">
+                    {'★'.repeat(5)}
+                  </div>
+                  <span className="text-gray-500 text-xs ml-1">4.9</span>
+                </div>
+              </div>
 
-        {/* Visual elements */}
-        <div className="relative mt-20 animate-slide-up" style={{animationDelay: '0.8s'}}>
-          <div className="relative mx-auto max-w-4xl">
-            {/* Mockup dashboard */}
-            <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+              {/* Success Popup */}
+              <div className="absolute top-16 left-0 bg-green-500 text-white rounded-lg p-3 z-10 transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                  <div className="ml-4 text-sm text-gray-600">CareerBuddy Dashboard</div>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="font-semibold text-sm">Admission Success!</span>
                 </div>
               </div>
-              <div className="p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                    <div className="space-y-2">
-                      <div className="h-3 bg-primary-200 rounded w-full"></div>
-                      <div className="h-3 bg-secondary-200 rounded w-4/5"></div>
-                      <div className="h-3 bg-accent-200 rounded w-3/5"></div>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-primary-500 rounded-full"></div>
-                      <div className="h-3 bg-gray-200 rounded flex-1"></div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-secondary-500 rounded-full"></div>
-                      <div className="h-3 bg-gray-200 rounded flex-1"></div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-accent-500 rounded-full"></div>
-                      <div className="h-3 bg-gray-200 rounded flex-1"></div>
-                    </div>
-                  </div>
+
+              {/* Free Courses Tag */}
+              <div className="absolute bottom-4 right-4 bg-blue-500 text-white rounded-lg p-3 z-10 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                <div className="text-center">
+                  <div className="text-lg font-bold">40+</div>
+                  <div className="text-xs">Free Courses</div>
                 </div>
+              </div>
+
+              {/* Main Image Container */}
+              <div className="bg-gradient-to-br from-primary-100 to-purple-100 rounded-2xl p-8 h-96 flex items-end justify-center relative overflow-hidden">
+                {/* Student Figure */}
+                <div className="w-48 h-56 bg-gradient-to-b from-gray-300 to-gray-400 rounded-t-full relative">
+                  {/* Head */}
+                  <div className="w-16 h-16 bg-gradient-to-b from-yellow-200 to-yellow-300 rounded-full mx-auto mb-2"></div>
+                  {/* Body */}
+                  <div className="w-full h-32 bg-gradient-to-b from-blue-400 to-blue-500 rounded-t-3xl"></div>
+                </div>
+                
+                {/* Floating Elements */}
+                <div className="absolute top-4 left-4 w-4 h-4 bg-yellow-400 rounded-full animate-bounce-subtle"></div>
+                <div className="absolute top-8 right-8 w-3 h-3 bg-green-400 rounded-full animate-bounce-subtle" style={{animationDelay: '1s'}}></div>
+                <div className="absolute bottom-16 left-8 w-2 h-2 bg-blue-400 rounded-full animate-bounce-subtle" style={{animationDelay: '2s'}}></div>
               </div>
             </div>
           </div>

@@ -22,6 +22,10 @@
   .btn-secondary {
     @apply bg-white hover:bg-gray-50 text-gray-900 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-soft hover:shadow-medium border border-gray-200 transform hover:-translate-y-0.5;
   }
+
+  .btn-green {
+    @apply bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-soft hover:shadow-medium transform hover:-translate-y-0.5;
+  }
   
   .card {
     @apply bg-white rounded-xl shadow-soft border border-gray-100 p-6 transition-all duration-200 hover:shadow-medium;
@@ -32,14 +36,21 @@
   }
   
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent;
   }
   
   .hero-gradient {
     background: linear-gradient(135deg, 
-      rgba(14, 165, 233, 0.1) 0%, 
-      rgba(217, 70, 239, 0.1) 50%, 
-      rgba(249, 115, 22, 0.1) 100%
+      rgba(95, 60, 254, 0.1) 0%, 
+      rgba(0, 255, 157, 0.1) 50%, 
+      rgba(94, 93, 240, 0.1) 100%
+    );
+  }
+
+  .educrat-gradient {
+    background: linear-gradient(135deg, 
+      #5F3CFE 0%, 
+      #1C0C45 100%
     );
   }
 }

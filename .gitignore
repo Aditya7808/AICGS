@@ -499,3 +499,4 @@ docker-compose.override.yml
 
 photos/
 *.db
+.ignore

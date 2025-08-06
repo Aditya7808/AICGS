@@ -9,6 +9,10 @@ const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
+  const [isEventsOpen, setIsEventsOpen] = useState(false);
+  const [isBlogOpen, setIsBlogOpen] = useState(false);
+  const [isPagesOpen, setIsPagesOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -21,45 +25,123 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white/95 backdrop-blur-sm shadow-soft border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">CB</span>
               </div>
-              <h1 className="text-2xl font-bold gradient-text">CareerBuddy</h1>
+              <h1 className="text-2xl font-bold text-gray-900">CareerBuddy</h1>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-8">
+            <Link
+              to="/"
+              className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
+            >
+              Home
+            </Link>
+            
+            {/* Courses Dropdown */}
+            <div className="relative group">
+              <button
+                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
+                onClick={() => setIsCoursesOpen(!isCoursesOpen)}
+              >
+                Courses
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Events Dropdown */}
+            <div className="relative group">
+              <button
+                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
+                onClick={() => setIsEventsOpen(!isEventsOpen)}
+              >
+                Events
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Blog Dropdown */}
+            <div className="relative group">
+              <button
+                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
+                onClick={() => setIsBlogOpen(!isBlogOpen)}
+              >
+                Blog
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Pages Dropdown */}
+            <div className="relative group">
+              <button
+                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
+                onClick={() => setIsPagesOpen(!isPagesOpen)}
+              >
+                Pages
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
+            <Link
+              to="/contact"
+              className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* Right side items */}
+          <div className="hidden lg:flex items-center space-x-4">
             <LanguageToggle />
             
+            {/* Search Icon */}
+            <button className="text-gray-400 hover:text-gray-600 p-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+
+            {/* Cart Icon */}
+            <button className="relative text-gray-400 hover:text-gray-600 p-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8" />
+              </svg>
+              <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
+            </button>
+            
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <Link
                   to="/assessment"
-                  className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-50"
+                  className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   {t('navigation.assessment')}
                 </Link>
                 <Link
-                  to="/results"
-                  className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-50"
-                >
-                  {t('navigation.results')}
-                </Link>
-                <Link
                   to="/progress"
-                  className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-50"
+                  className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   Progress
                 </Link>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-primary-600 to-primary-700 rounded-full flex items-center justify-center">
                     <span className="text-white font-semibold text-sm">
                       {user?.username?.charAt(0).toUpperCase()}
                     </span>
@@ -70,7 +152,7 @@ const Navbar: React.FC = () => {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="btn-secondary text-sm"
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
                 >
                   {t('common.logout')}
                 </button>
@@ -79,22 +161,22 @@ const Navbar: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <Link
                   to="/login"
-                  className="text-gray-700 hover:text-primary-600 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary-50"
+                  className="text-gray-700 hover:text-primary-600 px-4 py-2 text-sm font-medium transition-colors duration-200"
                 >
-                  {t('common.login')}
+                  Log in
                 </Link>
                 <Link
                   to="/signup"
-                  className="btn-primary text-sm"
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
                 >
-                  {t('common.signup')}
+                  Sign up
                 </Link>
               </div>
             )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={toggleMobileMenu}
               className="text-gray-700 hover:text-gray-900 focus:outline-none focus:text-gray-900 p-2"
@@ -112,14 +194,50 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
               <LanguageToggle />
+              
+              <Link
+                to="/"
+                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                to="/courses"
+                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Courses
+              </Link>
+              <Link
+                to="/events"
+                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Events
+              </Link>
+              <Link
+                to="/blog"
+                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Blog
+              </Link>
+              <Link
+                to="/contact"
+                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Contact
+              </Link>
               
               {isAuthenticated ? (
                 <>
                   <div className="flex items-center space-x-3 px-3 py-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-primary-600 to-primary-700 rounded-full flex items-center justify-center">
                       <span className="text-white font-semibold text-sm">
                         {user?.username?.charAt(0).toUpperCase()}
                       </span>
@@ -130,21 +248,21 @@ const Navbar: React.FC = () => {
                   </div>
                   <Link
                     to="/assessment"
-                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {t('navigation.assessment')}
                   </Link>
                   <Link
-                    to="/results"
-                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                    to="/progress"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {t('navigation.results')}
+                    Progress
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                    className="w-full text-left px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                   >
                     {t('common.logout')}
                   </button>
@@ -153,17 +271,17 @@ const Navbar: React.FC = () => {
                 <>
                   <Link
                     to="/login"
-                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {t('common.login')}
+                    Log in
                   </Link>
                   <Link
                     to="/signup"
-                    className="block px-3 py-2 bg-primary-600 text-white hover:bg-primary-700 rounded-lg transition-all duration-200"
+                    className="block px-3 py-2 bg-green-500 text-white hover:bg-green-600 rounded-lg transition-colors duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {t('common.signup')}
+                    Sign up
                   </Link>
                 </>
               )}
