@@ -26,19 +26,15 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
 
-  # Frontend Service
-  - type: web
+  # Frontend Static Site
+  - type: static
     name: careerbuddy-frontend
-    runtime: node
-    plan: starter
     buildCommand: |
       cd frontend &&
       npm install &&
       npm run build
     staticPublishPath: frontend/dist
     envVars:
-      - key: VITE_API_URL
-        value: https://careerbuddy-api.onrender.com
       - key: NODE_VERSION
         value: 18.17.0
     routes:
