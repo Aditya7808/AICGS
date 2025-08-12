@@ -12,6 +12,8 @@ import ProgressDashboard from './pages/ProgressDashboard';
 import EducationPathwaysPage from './pages/EducationPathwaysPage';
 import CASTDemo from './pages/CASTDemo';
 import Contact from './pages/Contact';
+import Dashboard from './pages/Dashboard';
+import SmartSkillsPage from './pages/SmartSkillsPage';
 import './i18n';
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
               <Route path="/mare-assessment" element={<MAREAssessment />} />
               <Route path="/results" element={<Results />} />
               <Route path="/progress" element={<ProgressDashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/smart-skills" element={<SmartSkillsPage />} />
               <Route path="/education/:careerIds" element={<EducationPathwaysPage />} />
               <Route path="/cast-demo" element={<CASTDemo />} />
               <Route path="/contact" element={<Contact />} />

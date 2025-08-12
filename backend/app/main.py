@@ -29,6 +29,16 @@ app.include_router(mare_supabase.router, prefix="/api/v1", tags=["mare"])
 app.include_router(progress.router)
 app.include_router(education.router, prefix="/api/education", tags=["education"])
 
+# Include ML routes for skill gap prioritization
+try:
+    from .api import ml_routes
+    app.include_router(ml_routes.router, prefix="/api/v1")
+    logger.info("ML Skill Prioritization API included successfully")
+except ImportError as e:
+    logger.warning(f"ML Skill Prioritization API not available: {e}")
+except Exception as e:
+    logger.error(f"Failed to include ML Skill Prioritization API: {e}")
+
 # Include CAST Framework router
 try:
     from .api import cast_api

@@ -58,10 +58,22 @@ const Navbar: React.FC = () => {
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
                 <Link
+                  to="/dashboard"
+                  className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                >
+                  📊 Dashboard
+                </Link>
+                <Link
                   to="/mare-assessment"
                   className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
                 >
                   🧠 MARE AI
+                </Link>
+                <Link
+                  to="/smart-skills"
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                >
+                  🎯 Smart Skills
                 </Link>
                 <Link
                   to="/cast-demo"
@@ -160,6 +172,34 @@ const Navbar: React.FC = () => {
                       {user?.full_name || user?.email}
                     </span>
                   </div>
+                  <Link
+                    to="/dashboard"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    📊 Dashboard
+                  </Link>
+                  <Link
+                    to="/mare-assessment"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    🧠 MARE AI
+                  </Link>
+                  <Link
+                    to="/smart-skills"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    🎯 Smart Skills
+                  </Link>
+                  <Link
+                    to="/cast-demo"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    🌐 CAST AI
+                  </Link>
                   <Link
                     to="/progress"
                     className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"

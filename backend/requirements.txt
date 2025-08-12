@@ -21,6 +21,10 @@ pandas==2.1.4
 numpy==1.24.3
 scipy==1.11.1
 
+# ML for Skill Gap Prioritization
+lightgbm>=3.3.0
+joblib>=1.1.0
+
 # Feature engineering and preprocessing
 category_encoders==2.6.1
 imbalanced-learn==0.11.0
