@@ -22,6 +22,6 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: FRONTEND_URL
-        value: https://careerbuddy-frontend.onrender.com
+        sync: false
       - key: PYTHON_VERSION
-        value: 3.11.18
+        value: 3.11.0
