@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { config } from '../config/api';
 
 interface TranslationResult {
   original_text: string;
@@ -90,7 +91,7 @@ const CASTFrameworkDemo: React.FC = () => {
 
   const fetchSupportedLanguages = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/cast/languages');
+      const response = await fetch(`${config.apiUrl}/api/cast/languages`);
       const data = await response.json();
       setSupportedLanguages(data.supported_languages || []);
     } catch (error) {
@@ -102,7 +103,7 @@ const CASTFrameworkDemo: React.FC = () => {
 
   const fetchCulturalRegions = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/cast/cultural-regions');
+      const response = await fetch(`${config.apiUrl}/api/cast/cultural-regions`);
       const data = await response.json();
       setCulturalRegions(data.cultural_regions || []);
     } catch (error) {
@@ -117,7 +118,7 @@ const CASTFrameworkDemo: React.FC = () => {
     
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/cast/translate', {
+      const response = await fetch(`${config.apiUrl}/api/cast/translate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -172,7 +173,7 @@ const CASTFrameworkDemo: React.FC = () => {
     
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/cast/analyze-bias', {
+      const response = await fetch(`${config.apiUrl}/api/cast/analyze-bias`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -231,7 +232,7 @@ const CASTFrameworkDemo: React.FC = () => {
     
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/cast/map-skills', {
+      const response = await fetch(`${config.apiUrl}/api/cast/map-skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

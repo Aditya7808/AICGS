@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     database_url: str = os.getenv("DATABASE_URL", "")
     
     # Frontend Configuration
-    frontend_url: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    frontend_url: str = os.getenv("FRONTEND_URL", "http://localhost:5173")
     
     # Application Configuration
     api_version: str = "v2.0.0"

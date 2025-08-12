@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { config } from '../config/api';
 import ResultCard from '../components/ResultCard';
 import PeerIntelligence from '../components/PeerIntelligence';
 import SkillGapAnalyzer from '../components/SkillGapAnalyzer';
@@ -233,7 +234,7 @@ const Results: React.FC = () => {
 
       console.log('🤖 Fetching Groq enhanced results with data:', assessmentData);
 
-      const response = await fetch('http://localhost:8000/api/v1/mare/recommendations/enhanced', {
+      const response = await fetch(`${config.apiUrl}/api/v1/mare/recommendations/enhanced`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

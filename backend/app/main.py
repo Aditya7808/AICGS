@@ -18,7 +18,10 @@ app = FastAPI(title="CareerBuddyAPI", version="2.0.0")
 
 # Configure CORS - more restrictive for production
 allowed_origins = [
-    'https://aicgs-live.onrender.com'
+    settings.frontend_url,
+    "https://aicgs-live.onrender.com",
+    "http://localhost:3000",  # Legacy support
+    "http://localhost:5173",  # Vite dev server
 ]
 
 # Add wildcard only in development

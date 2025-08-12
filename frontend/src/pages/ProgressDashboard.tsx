@@ -4,6 +4,7 @@ import {
   CheckCircle, Activity, Plus, Edit3, ExternalLink
 } from 'lucide-react';
 import { progressAPI } from '../services/api';
+import { config } from '../config/api';
 import SkillProgressModal from '../components/SkillProgressModal';
 import CareerGoalModal from '../components/CareerGoalModal';
 
@@ -99,7 +100,7 @@ const ProgressDashboard: React.FC = () => {
       console.error('Progress fetch error:', err);
       
       if (err.code === 'ECONNABORTED' || err.message === 'Request timeout') {
-        setError('Cannot connect to server. Please make sure the backend server is running on http://localhost:8000');
+        setError(`Cannot connect to server. Please make sure the backend server is running on ${config.apiUrl}`);
       } else if (err.response?.status === 401) {
         setError('Authentication failed. Please log in again.');
         localStorage.removeItem('token');
