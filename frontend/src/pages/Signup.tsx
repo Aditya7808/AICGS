@@ -82,10 +82,15 @@ const Signup: React.FC = () => {
   const handleGoogleSignup = async () => {
     try {
       setError('');
+      setIsLoading(true);
+      console.log('Starting Google sign-up process...');
       await loginWithGoogle();
     } catch (err: any) {
       console.error('Google sign-up error:', err);
-      setError('Failed to initiate Google sign-up. Please try again.');
+      const errorMessage = err.message || 'Failed to initiate Google sign-up. Please try again.';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 

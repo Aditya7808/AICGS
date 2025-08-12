@@ -91,12 +91,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const loginWithGoogle = async () => {
     try {
+      console.log('Initiating Google OAuth...');
       const response = await authAPI.googleSignin();
+      console.log('Google OAuth URL received:', response.url);
+      
       // Redirect to Google OAuth URL
       window.location.href = response.url;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google OAuth initiation failed:', error);
-      throw error;
+      console.error('Error details:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
+      });
+      throw new Error(error.response?.data?.detail || error.message || 'Failed to initiate Google sign-up');
     }
   };
 
