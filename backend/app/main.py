@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .api import auth_supabase, recommend, mare_supabase, progress, education
 from .db.supabase_client import supabase_manager
 from .logic.data_processor import load_training_data
+from .core.config import Settings
 import os
 import logging
 
@@ -10,12 +11,26 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Load settings
+settings = Settings()
+
 app = FastAPI(title="CareerBuddyAPI", version="2.0.0")
 
-# Configure CORS
+# Configure CORS - more restrictive for production
+allowed_origins = [
+    settings.frontend_url,
+    "http://localhost:3000",  # Development
+    "http://localhost:5173",  # Vite dev server
+    "https://careerbuddy-frontend.onrender.com",  # Production frontend
+]
+
+# Add wildcard only in development
+if settings.debug:
+    allowed_origins.append("*")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # React dev servers
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"],
     allow_headers=["*"],
@@ -153,16 +168,18 @@ async def create_sample_careers_supabase(mare_crud):
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to CareerBuddyAPI v2.0 - Enhanced with AI Recommendations (Supabase)"}
+    """Root endpoint with basic info"""
+    return {
+        "message": "CareerBuddy API v2.0.0",
+        "status": "running",
+        "docs": "/docs",
+        "health": "/health"
+    }
 
 @app.get("/health")
 async def health_check():
-    return {
-        "status": "healthy", 
-        "version": "2.0.0", 
-        "database": "Supabase PostgreSQL",
-        "environment": "production" if not os.getenv("DEBUG", False) else "development"
-    }
+    """Health check endpoint for deployment platforms like Render"""
+    return {"status": "healthy", "service": "CareerBuddyAPI", "version": "2.0.0"}
 
 @app.get("/api/stats")
 async def get_api_stats():
