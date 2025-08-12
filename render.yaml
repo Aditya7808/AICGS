@@ -27,7 +27,7 @@ services:
         value: 3.11.0
 
   # Frontend Static Site
-  - type: static
+  - type: static_site
     name: careerbuddy-frontend
     buildCommand: |
       cd frontend &&
