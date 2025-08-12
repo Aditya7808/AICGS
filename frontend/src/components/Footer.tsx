@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
-  const { t } = useTranslation();
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -55,8 +53,8 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/assessment" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Career Assessment
+                <Link to="/mare-assessment" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  MARE AI Assessment
                 </Link>
               </li>
               <li>

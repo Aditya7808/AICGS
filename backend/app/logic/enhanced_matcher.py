@@ -1,9 +1,10 @@
 from typing import List, Dict, Any, Tuple, Optional
-from sqlalchemy.orm import Session
-from ..db.crud import get_careers, get_user_profile, get_career_outcomes_by_profile
-from ..models.user import UserProfile
-from ..models.career import Career
-from ..models.interaction import CareerOutcome
+# Legacy SQLAlchemy imports - only used for backward compatibility
+# from sqlalchemy.orm import Session
+# from ..db.crud import get_careers, get_user_profile, get_career_outcomes_by_profile
+# from ..models.user import UserProfile
+# from ..models.career import Career
+# from ..models.interaction import CareerOutcome
 from .feature_engineering import FeatureEngineer
 import numpy as np
 import logging
@@ -33,7 +34,7 @@ class EnhancedContentFilter:
     def __init__(self):
         self.feature_engineer = FeatureEngineer()
         
-    def calculate_academic_compatibility(self, user_profile: Dict[str, Any], career: Career) -> Tuple[float, List[str]]:
+    def calculate_academic_compatibility(self, user_profile: Dict[str, Any], career: Dict[str, Any]) -> Tuple[float, List[str]]:
         """Calculate academic compatibility score with explanations"""
         score = 0.0
         explanations = []
@@ -86,7 +87,7 @@ class EnhancedContentFilter:
         
         return min(score, 1.0), explanations
     
-    def calculate_interest_skill_similarity(self, user_profile: Dict[str, Any], career: Career) -> Tuple[float, List[str]]:
+    def calculate_interest_skill_similarity(self, user_profile: Dict[str, Any], career: Dict[str, Any]) -> Tuple[float, List[str]]:
         """Calculate interest and skill similarity with detailed matching"""
         explanations = []
         
@@ -129,7 +130,7 @@ class EnhancedContentFilter:
         
         return combined_score, explanations
     
-    def calculate_demographic_compatibility(self, user_profile: Dict[str, Any], career: Career) -> Tuple[float, List[str]]:
+    def calculate_demographic_compatibility(self, user_profile: Dict[str, Any], career: Dict[str, Any]) -> Tuple[float, List[str]]:
         """Calculate demographic and regional compatibility"""
         score = 0.5  # Base score
         explanations = []
@@ -160,8 +161,8 @@ class EnhancedContentFilter:
         
         return min(score, 1.0), explanations
     
-    def calculate_success_probability(self, user_profile: Dict[str, Any], career: Career, 
-                                    similar_outcomes: List[CareerOutcome]) -> Tuple[float, List[str]]:
+    def calculate_success_probability(self, user_profile: Dict[str, Any], career: Dict[str, Any],
+                                    similar_outcomes: List[Dict[str, Any]]) -> Tuple[float, List[str]]:
         """Calculate success probability based on similar student outcomes"""
         if not similar_outcomes:
             return 0.5, ["Limited data for similar profiles"]
@@ -210,8 +211,8 @@ class EnhancedContentFilter:
         explanations.append(f"General career success rate: {career_success_rate:.1%}")
         return career_success_rate, explanations
 
-def calculate_enhanced_career_match(user_profile: Dict[str, Any], career: Career, 
-                                  similar_outcomes: Optional[List[CareerOutcome]] = None) -> Dict[str, Any]:
+def calculate_enhanced_career_match(user_profile: Dict[str, Any], career: Dict[str, Any],
+                                  similar_outcomes: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
     """Enhanced career matching with comprehensive scoring"""
     
     if similar_outcomes is None:
@@ -277,73 +278,225 @@ def calculate_enhanced_career_match(user_profile: Dict[str, Any], career: Career
         }
     }
 
-def get_enhanced_career_recommendations(db: Session, user_data: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Get enhanced career recommendations using improved content filtering"""
-    
-    # Get all careers
-    careers = get_careers(db)
-    
-    # Get similar student outcomes for context
-    similar_outcomes = []
-    if all(key in user_data for key in ['education_level', 'residence_type', 'family_background']):
-        similar_outcomes = get_career_outcomes_by_profile(
-            db,
-            user_data['education_level'],
-            user_data['residence_type'],
-            user_data['family_background'],
-            safe_float(user_data.get('current_marks_value', 0)) - 10  # Allow 10-point range
-        )
-    
-    recommendations = []
-    
-    # Calculate enhanced match for each career
-    for career in careers:
-        is_active = safe_get_attr(career, 'is_active', True)
-        if is_active:  # Only consider active careers
-            match_result = calculate_enhanced_career_match(user_data, career, similar_outcomes)
-            recommendations.append(match_result)
-    
-    # Sort by overall score and confidence
-    recommendations.sort(key=lambda x: (x['overall_score'], x['confidence_level']), reverse=True)
-    
-    # Return top 10 recommendations
-    return recommendations[:10]
+# Legacy function - disabled during Supabase migration
+# def get_enhanced_career_recommendations(db: Session, user_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+#     """Get enhanced career recommendations using improved content filtering"""
+#     
+#     # Get all careers
+#     careers = get_careers(db)
+#     
+#     # Get similar student outcomes for context
+#     similar_outcomes = []
+#     if all(key in user_data for key in ['education_level', 'residence_type', 'family_background']):
+#         similar_outcomes = get_career_outcomes_by_profile(
+#             db,
+#             user_data['education_level'],
+#             user_data['residence_type'],
+#             user_data['family_background'],
+#             safe_float(user_data.get('current_marks_value', 0)) - 10  # Allow 10-point range
+#         )
+#     
+#     recommendations = []
+#     
+#     # Calculate enhanced match for each career
+#     for career in careers:
+#         is_active = safe_get_attr(career, 'is_active', True)
+#         if is_active:  # Only consider active careers
+#             match_result = calculate_enhanced_career_match(user_data, career, similar_outcomes)
+#             recommendations.append(match_result)
+#     
+#     # Sort by overall score and confidence
+#     recommendations.sort(key=lambda x: (x['overall_score'], x['confidence_level']), reverse=True)
+#     
+#     # Return top 10 recommendations
+#     return recommendations[:10]
 
-# Legacy functions for backward compatibility
-def calculate_career_match_score(user_skills: List[str], user_interests: List[str], 
-                               career_skills: List[str], career_interests: List[str]) -> float:
-    """Legacy function - kept for backward compatibility"""
-    # Simple similarity calculation
-    user_skills_set = set(skill.lower().strip() for skill in user_skills)
-    user_interests_set = set(interest.lower().strip() for interest in user_interests)
-    career_skills_set = set(skill.lower().strip() for skill in career_skills)
-    career_interests_set = set(interest.lower().strip() for interest in career_interests)
-    
-    # Calculate overlap
-    skill_overlap = len(user_skills_set.intersection(career_skills_set))
-    interest_overlap = len(user_interests_set.intersection(career_interests_set))
-    
-    # Calculate scores
-    skill_score = skill_overlap / max(len(career_skills_set), 1) if career_skills_set else 0
-    interest_score = interest_overlap / max(len(career_interests_set), 1) if career_interests_set else 0
-    
-    # Weighted final score
-    final_score = (skill_score * 0.6) + (interest_score * 0.4)
-    return min(final_score, 1.0)
+# Supabase-based enhanced recommendations
+async def get_enhanced_career_recommendations_supabase(user_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Get enhanced career recommendations using Supabase data"""
+    try:
+        from ..db.career_crud_supabase import career_crud
+        
+        # Get all careers from Supabase
+        careers = await career_crud.get_all_careers()
+        
+        if not careers:
+            logger.warning("No careers found in Supabase")
+            return []
+        
+        recommendations = []
+        
+        # Calculate enhanced match for each career
+        for career in careers:
+            if career.get('is_active', True):  # Only consider active careers
+                match_result = calculate_enhanced_career_match_supabase(user_data, career)
+                recommendations.append(match_result)
+        
+        # Sort by overall score and confidence
+        recommendations.sort(key=lambda x: (x['overall_score'], x['confidence_level']), reverse=True)
+        
+        # Return top 10 recommendations
+        return recommendations[:10]
+        
+    except Exception as e:
+        logger.error(f"Error getting enhanced career recommendations from Supabase: {e}")
+        return []
 
-def get_career_recommendations(db: Session, user_data: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Legacy function - kept for backward compatibility"""
-    enhanced_recommendations = get_enhanced_career_recommendations(db, user_data)
+def calculate_enhanced_career_match_supabase(user_data: Dict[str, Any], career: Dict[str, Any]) -> Dict[str, Any]:
+    """Calculate enhanced match score for Supabase career data"""
     
-    # Convert to legacy format
-    legacy_recommendations = []
-    for rec in enhanced_recommendations:
-        legacy_rec = {
-            "career": rec['career_name'],
-            "score": rec['overall_score'],
-            "local_demand": rec['career_details']['local_demand'],
-            "description": f"Career in {rec['category']} field"
-        }
-        legacy_recommendations.append(legacy_rec)
+    # Basic compatibility scores
+    skill_score = calculate_skill_compatibility_supabase(user_data, career)
+    interest_score = calculate_interest_compatibility_supabase(user_data, career)
+    academic_score = calculate_academic_compatibility_supabase(user_data, career)
     
-    return legacy_recommendations[:5]  # Return top 5 for legacy compatibility
+    # Calculate weighted overall score
+    overall_score = (
+        skill_score * 0.4 +
+        interest_score * 0.3 +
+        academic_score * 0.3
+    )
+    
+    # Determine confidence level
+    confidence_level = determine_confidence_level_supabase(skill_score, interest_score, academic_score)
+    
+    return {
+        'career_id': career.get('id'),
+        'career_name': career.get('name', 'Unknown Career'),
+        'category': career.get('category', 'General'),
+        'overall_score': round(overall_score, 3),
+        'confidence_level': confidence_level,
+        'skill_match_score': round(skill_score, 3),
+        'interest_match_score': round(interest_score, 3),
+        'academic_compatibility_score': round(academic_score, 3),
+        'career_details': {
+            'description': career.get('description_en', 'No description available'),
+            'required_skills': career.get('required_skills', []),
+            'min_education': career.get('min_education_level', 'Any'),
+            'local_demand': career.get('local_demand', 'Medium'),
+            'salary_range': career.get('average_salary_range', 'Not specified'),
+            'growth_prospects': career.get('growth_prospects', 'Stable')
+        },
+        'explanations': generate_explanations_supabase(user_data, career, skill_score, interest_score, academic_score)
+    }
+
+def calculate_skill_compatibility_supabase(user_data: Dict[str, Any], career: Dict[str, Any]) -> float:
+    """Calculate skill compatibility for Supabase data"""
+    user_skills = set(skill.lower() for skill in user_data.get('skills', []))
+    career_skills = career.get('required_skills', [])
+    
+    if isinstance(career_skills, str):
+        career_skills = [s.strip().lower() for s in career_skills.split(',')]
+    elif isinstance(career_skills, list):
+        career_skills = [s.lower() if isinstance(s, str) else str(s).lower() for s in career_skills]
+    else:
+        career_skills = []
+    
+    if not career_skills:
+        return 0.5  # Neutral score if no skills specified
+    
+    career_skills_set = set(career_skills)
+    matches = len(user_skills.intersection(career_skills_set))
+    
+    return min(matches / len(career_skills_set), 1.0)
+
+def calculate_interest_compatibility_supabase(user_data: Dict[str, Any], career: Dict[str, Any]) -> float:
+    """Calculate interest compatibility for Supabase data"""
+    user_interests = set(interest.lower() for interest in user_data.get('interests', []))
+    career_interests = career.get('interests', [])
+    
+    if isinstance(career_interests, str):
+        career_interests = [i.strip().lower() for i in career_interests.split(',')]
+    elif isinstance(career_interests, list):
+        career_interests = [i.lower() if isinstance(i, str) else str(i).lower() for i in career_interests]
+    else:
+        career_interests = []
+    
+    if not career_interests:
+        return 0.5  # Neutral score if no interests specified
+    
+    career_interests_set = set(career_interests)
+    matches = len(user_interests.intersection(career_interests_set))
+    
+    return min(matches / len(career_interests_set), 1.0)
+
+def calculate_academic_compatibility_supabase(user_data: Dict[str, Any], career: Dict[str, Any]) -> float:
+    """Calculate academic compatibility for Supabase data"""
+    score = 0.5  # Base score
+    
+    # Check minimum requirements
+    user_10th = safe_float(user_data.get('tenth_percentage', 0))
+    user_12th = safe_float(user_data.get('twelfth_percentage', 0))
+    user_cgpa = safe_float(user_data.get('current_marks_value', 0))
+    
+    min_10th = safe_float(career.get('min_percentage_10th', 0))
+    min_12th = safe_float(career.get('min_percentage_12th', 0))
+    min_cgpa = safe_float(career.get('min_cgpa', 0))
+    
+    # Check if user meets minimum requirements
+    meets_requirements = True
+    if min_10th > 0 and user_10th < min_10th:
+        meets_requirements = False
+    if min_12th > 0 and user_12th < min_12th:
+        meets_requirements = False
+    if min_cgpa > 0 and user_cgpa < min_cgpa:
+        meets_requirements = False
+    
+    if not meets_requirements:
+        return 0.2  # Low score if requirements not met
+    
+    # Bonus for exceeding requirements
+    if user_10th > min_10th + 10:
+        score += 0.2
+    if user_12th > min_12th + 10:
+        score += 0.2
+    if user_cgpa > min_cgpa + 1:
+        score += 0.1
+    
+    return min(score, 1.0)
+
+def determine_confidence_level_supabase(skill_score: float, interest_score: float, academic_score: float) -> str:
+    """Determine confidence level for Supabase-based recommendations"""
+    avg_score = (skill_score + interest_score + academic_score) / 3
+    
+    if avg_score >= 0.8:
+        return "high"
+    elif avg_score >= 0.6:
+        return "medium"
+    else:
+        return "low"
+
+def generate_explanations_supabase(user_data: Dict[str, Any], career: Dict[str, Any], 
+                                 skill_score: float, interest_score: float, academic_score: float) -> List[str]:
+    """Generate explanations for Supabase-based recommendations"""
+    explanations = []
+    
+    if skill_score > 0.7:
+        explanations.append("Strong skill match with your profile")
+    elif skill_score > 0.4:
+        explanations.append("Good skill alignment with some gaps to fill")
+    else:
+        explanations.append("Significant skill development needed")
+    
+    if interest_score > 0.7:
+        explanations.append("Excellent match with your interests")
+    elif interest_score > 0.4:
+        explanations.append("Moderate interest alignment")
+    else:
+        explanations.append("May require developing new interests")
+    
+    if academic_score > 0.7:
+        explanations.append("Strong academic fit")
+    elif academic_score > 0.4:
+        explanations.append("Meets academic requirements")
+    else:
+        explanations.append("Academic requirements may be challenging")
+    
+    # Add career-specific insights
+    local_demand = career.get('local_demand', 'Medium').lower()
+    if local_demand == 'high':
+        explanations.append("High local demand in your area")
+    elif local_demand == 'low':
+        explanations.append("Limited local opportunities")
+    
+    return explanations

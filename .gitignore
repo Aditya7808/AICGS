@@ -166,8 +166,17 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
+# Database files (legacy SQLite - no longer used)
+# CareerBuddy now uses Supabase PostgreSQL
 db.sqlite3
 db.sqlite3-journal
+*.db
+*.sqlite
+*.sqlite3
+
+# Supabase local development (if using local Supabase)
+supabase/.branches
+supabase/.temp
 
 # Flask stuff:
 instance/
@@ -264,19 +273,13 @@ cython_debug/
 # DATABASES
 # ========================
 
-# SQLite databases
-*.db
-*.sqlite
-*.sqlite3
-
-# PostgreSQL
-*.pgsql
-
-# MySQL
-*.mysql
-
 # Database dumps
-*.sql
+*.sql.dump
+*.sql.gz
+
+# Database backup files
+*.backup
+*.bak
 
 # ========================
 # IDEs & EDITORS

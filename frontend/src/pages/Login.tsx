@@ -1,28 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { authAPI } from '../services/api';
 
 const Login: React.FC = () => {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [needsEmailVerification, setNeedsEmailVerification] = useState(false);
+  const [resendingConfirmation, setResendingConfirmation] = useState(false);
 
   useEffect(() => {
     // Check for success message from signup
     if (location.state?.message) {
       setSuccessMessage(location.state.message);
+      if (location.state?.email) {
+        setFormData(prev => ({ ...prev, email: location.state.email }));
+      }
+      if (location.state?.needsVerification) {
+        setNeedsEmailVerification(true);
+      }
       // Clear the message from history state
       window.history.replaceState(null, '');
     }
   }, [location]);
+
+  const handleResendConfirmation = async () => {
+    if (!formData.email) {
+      setError('Please enter your email address first');
+      return;
+    }
+
+    setResendingConfirmation(true);
+    setError('');
+
+    try {
+      await authAPI.resendConfirmation(formData.email);
+      setSuccessMessage('Confirmation email resent! Please check your inbox.');
+      setNeedsEmailVerification(false);
+    } catch (err: any) {
+      console.error('Resend confirmation error:', err);
+      setError(err.response?.data?.detail || 'Failed to resend confirmation email');
+    } finally {
+      setResendingConfirmation(false);
+    }
+  };
+
+  const handleGoogleSignin = async () => {
+    try {
+      setError('');
+      await loginWithGoogle();
+    } catch (err: any) {
+      console.error('Google sign-in error:', err);
+      setError('Failed to initiate Google sign-in. Please try again.');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,15 +70,17 @@ const Login: React.FC = () => {
     setError('');
     
     try {
-      await login(formData.username, formData.password);
+      await login(formData.email, formData.password);
       navigate('/');
     } catch (err: any) {
       console.error('Login error:', err);
       // Show the actual error message from the backend
-      if (err.response?.data?.detail) {
-        setError(err.response.data.detail);
-      } else {
-        setError('Login failed. Please check your credentials.');
+      const errorMessage = err.response?.data?.detail || 'Login failed. Please check your credentials.';
+      setError(errorMessage);
+      
+      // If error is about email confirmation, show the verification message
+      if (errorMessage.includes('confirm your email')) {
+        setNeedsEmailVerification(true);
       }
     } finally {
       setLoading(false);
@@ -83,22 +125,53 @@ const Login: React.FC = () => {
                   </svg>
                   {error}
                 </div>
+                {error.includes('confirm your email') && (
+                  <div className="mt-3 pl-7">
+                    <button
+                      onClick={handleResendConfirmation}
+                      disabled={resendingConfirmation}
+                      className="text-sm text-red-800 hover:text-red-900 underline disabled:opacity-50"
+                    >
+                      {resendingConfirmation ? 'Sending...' : 'Resend confirmation email'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {needsEmailVerification && (
+              <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg">
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  Please check your email and click the confirmation link before logging in.
+                </div>
+                <div className="mt-3 pl-7">
+                  <button
+                    onClick={handleResendConfirmation}
+                    disabled={resendingConfirmation}
+                    className="text-sm text-blue-800 hover:text-blue-900 underline disabled:opacity-50"
+                  >
+                    {resendingConfirmation ? 'Sending...' : 'Resend confirmation email'}
+                  </button>
+                </div>
               </div>
             )}
             
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Username or Email
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
               </label>
               <input
-                id="username"
-                name="username"
-                type="text"
+                id="email"
+                name="email"
+                type="email"
                 required
-                value={formData.username}
-                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                value={formData.email}
+                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                placeholder="Enter your username or email"
+                placeholder="Enter your email address"
               />
             </div>
 
@@ -151,15 +224,7 @@ const Login: React.FC = () => {
             <div className="space-y-3">
               <button
                 type="button"
-                className="w-full flex justify-center items-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
-              >
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                Log in via Facebook
-              </button>
-              <button
-                type="button"
+                onClick={handleGoogleSignin}
                 className="w-full flex justify-center items-center bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
               >
                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -168,7 +233,7 @@ const Login: React.FC = () => {
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Log in via Google
+                Continue with Google
               </button>
             </div>
           </form>

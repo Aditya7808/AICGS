@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { CareerMatch } from '../services/api';
 
 interface ResultCardProps {
@@ -7,7 +6,6 @@ interface ResultCardProps {
 }
 
 const ResultCard: React.FC<ResultCardProps> = ({ match }) => {
-  const { t } = useTranslation();
 
   const getScoreColor = (score: number) => {
     if (score >= 0.8) return 'text-green-700 bg-green-100 border-green-200';

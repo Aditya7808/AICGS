@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .api import auth, recommend
-from .db.base import create_tables
-from .db.crud import create_sample_careers
-from .db.base import SessionLocal
+from .api import auth_supabase, recommend, mare_supabase, progress, education
+from .db.supabase_client import supabase_manager
 from .logic.data_processor import load_training_data
 import os
 import logging
@@ -24,37 +22,36 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-# Include routers
-app.include_router(auth.router)
+# Include routers - using Supabase auth
+app.include_router(auth_supabase.router)
 app.include_router(recommend.router)
-
-# Import and include progress router
-from .api import progress
+app.include_router(mare_supabase.router, prefix="/api/v1", tags=["mare"])
 app.include_router(progress.router)
-
-# Import and include education router
-from .api import education
 app.include_router(education.router, prefix="/api/education", tags=["education"])
+
+# Include CAST Framework router
+try:
+    from .api import cast_api
+    app.include_router(cast_api.router)
+    logger.info("CAST Framework API included successfully")
+except ImportError as e:
+    logger.warning(f"CAST Framework API not available: {e}")
+except Exception as e:
+    logger.error(f"Failed to include CAST Framework API: {e}")
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize database and sample data on startup"""
-    logger.info("Starting CareerBuddyAPI v2.0...")
+    """Initialize Supabase connection and sample data on startup"""
+    logger.info("Starting CareerBuddyAPI v2.0 with Supabase...")
     
-    # Create tables
-    create_tables()
-    logger.info("Database tables created successfully")
-    
-    # Create sample careers if they don't exist
-    db = SessionLocal()
     try:
-        create_sample_careers(db)
-        logger.info("Sample careers initialized")
+        # Initialize Supabase manager
+        supabase_manager.initialize()
+        logger.info("Supabase connection established successfully")
         
-        # Create sample education pathways
-        from .db.crud_improved import create_sample_education_pathways
-        create_sample_education_pathways(db)
-        logger.info("Sample education pathways initialized")
+        # Initialize sample data if needed
+        await initialize_sample_data()
+        logger.info("Sample data initialized")
         
         # Load training data from CSV if file exists
         csv_path = "data.csv"
@@ -68,37 +65,123 @@ async def startup_event():
             logger.warning(f"Training data file {csv_path} not found")
             
     except Exception as e:
-        logger.error(f"Startup error: {e} ")
-    finally:
-        db.close()
+        logger.error(f"Startup error: {e}")
+        raise e
     
     logger.info("CareerBuddyAPI startup completed")
 
+async def initialize_sample_data():
+    """Initialize sample data in Supabase"""
+    try:
+        from .db.mare_crud_supabase import MAReCRUDSupabase
+        
+        mare_crud = MAReCRUDSupabase()
+        
+        # Check if careers exist, if not create sample ones
+        careers = mare_crud.supabase.table("careers").select("id").limit(1).execute()
+        if not careers.data:
+            logger.info("Creating sample careers in Supabase...")
+            await create_sample_careers_supabase(mare_crud)
+        
+        logger.info("Sample data initialization completed")
+        
+    except Exception as e:
+        logger.error(f"Error initializing sample data: {e}")
+
+async def create_sample_careers_supabase(mare_crud):
+    """Create sample careers in Supabase"""
+    sample_careers = [
+        {
+            "name": "Software Developer",
+            "description_en": "Develops software applications and systems using various programming languages.",
+            "description_hi": "विभिन्न प्रोग्रामिंग भाषाओं का उपयोग करके सॉफ्टवेयर एप्लिकेशन और सिस्टम विकसित करता है।",
+            "required_skills": "Coding,Problem Solving,Programming,Logic",
+            "interests": "Technology,Coding,Innovation",
+            "local_demand": "High",
+            "category": "Technology",
+            "subcategory": "Software Development",
+            "min_education_level": "Bachelor's Degree",
+            "preferred_subjects": "Computer Science, Mathematics",
+            "average_salary_range": "5-12 LPA",
+            "growth_prospects": "Excellent"
+        },
+        {
+            "name": "Data Scientist",
+            "description_en": "Analyzes complex data to help businesses make informed decisions using statistical methods and machine learning.",
+            "description_hi": "सांख्यिकीय विधियों और मशीन लर्निंग का उपयोग करके व्यवसायों को सूचित निर्णय लेने में मदद करने के लिए जटिल डेटा का विश्लेषण करता है।",
+            "required_skills": "Analytics,Statistics,Python,Machine Learning,Data Visualization",
+            "interests": "Technology,Analysis,Research,Mathematics",
+            "local_demand": "High",
+            "category": "Technology",
+            "subcategory": "Data Science",
+            "min_education_level": "Bachelor's Degree",
+            "preferred_subjects": "Statistics, Computer Science, Mathematics",
+            "average_salary_range": "8-20 LPA",
+            "growth_prospects": "Excellent"
+        },
+        {
+            "name": "UI/UX Designer",
+            "description_en": "Creates user-friendly and appealing designs for websites and applications.",
+            "description_hi": "वेबसाइट और एप्लिकेशन के लिए उपयोगकर्ता-अनुकूल और आकर्षक डिज़ाइन बनाता है।",
+            "required_skills": "Design,Creativity,User Research,Prototyping,Figma,Adobe Creative Suite",
+            "interests": "Design,Technology,Art,Psychology",
+            "local_demand": "High",
+            "category": "Design",
+            "subcategory": "User Experience",
+            "min_education_level": "Bachelor's Degree",
+            "preferred_subjects": "Design, Psychology, Computer Science",
+            "average_salary_range": "4-10 LPA",
+            "growth_prospects": "Good"
+        }
+    ]
+    
+    try:
+        result = mare_crud.supabase.table("careers").insert(sample_careers).execute()
+        logger.info(f"Created {len(result.data)} sample careers")
+    except Exception as e:
+        logger.error(f"Error creating sample careers: {e}")
+
 @app.get("/")
 async def root():
-    return {"message": "Welcome to CareerBuddyAPI v2.0 - Enhanced with AI Recommendations"}
+    return {"message": "Welcome to CareerBuddyAPI v2.0 - Enhanced with AI Recommendations (Supabase)"}
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "version": "2.0.0"}
+    return {
+        "status": "healthy", 
+        "version": "2.0.0", 
+        "database": "Supabase PostgreSQL",
+        "environment": "production" if not os.getenv("DEBUG", False) else "development"
+    }
 
 @app.get("/api/stats")
 async def get_api_stats():
-    """Get API statistics"""
-    db = SessionLocal()
+    """Get API statistics from Supabase"""
     try:
-        from .models.user import User, UserProfile
-        from .models.career import Career
-        from .models.interaction import CareerOutcome, UserInteraction, AssessmentHistory
+        from .db.mare_crud_supabase import MAReCRUDSupabase
         
-        stats = {
-            "users": db.query(User).count(),
-            "user_profiles": db.query(UserProfile).count(),
-            "careers": db.query(Career).count(),
-            "career_outcomes": db.query(CareerOutcome).count(),
-            "user_interactions": db.query(UserInteraction).count(),
-            "assessments": db.query(AssessmentHistory).count()
+        mare_crud = MAReCRUDSupabase()
+        
+        # Get counts from Supabase tables
+        stats = {}
+        
+        # Get careers count
+        careers_result = mare_crud.supabase.table("careers").select("id").execute()
+        stats["careers"] = len(careers_result.data) if careers_result.data else 0
+        
+        # Get profiles count
+        profiles_result = mare_crud.supabase.table("profiles").select("id").execute()
+        stats["profiles"] = len(profiles_result.data) if profiles_result.data else 0
+        
+        # Get user profiles count
+        user_profiles_result = mare_crud.supabase.table("user_profiles").select("id").execute()
+        stats["user_profiles"] = len(user_profiles_result.data) if user_profiles_result.data else 0
+        
+        return {
+            "database": "Supabase PostgreSQL",
+            "statistics": stats,
+            "api_version": "2.0.0"
         }
-        return stats
-    finally:
-        db.close()
+    except Exception as e:
+        logger.error(f"Error getting stats: {e}")
+        return {"error": "Unable to fetch statistics", "message": str(e)}

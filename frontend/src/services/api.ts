@@ -23,22 +23,48 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Only redirect to login if we're not already on login/signup pages
+      const currentPath = window.location.pathname;
+      if (!currentPath.includes('/login') && !currentPath.includes('/signup')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
 );
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface SignupRequest {
-  username: string;
   email: string;
   password: string;
+  full_name?: string;
+}
+
+export interface TokenResponse {
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  expires_in: number;
+}
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  full_name?: string;
+  created_at: string;
+}
+
+export interface SignupResponse {
+  message: string;
+  user_id: string;
+  email_confirmed: boolean;
+  requires_email_verification: boolean;
 }
 
 export interface RecommendationRequest {
@@ -47,6 +73,15 @@ export interface RecommendationRequest {
   skills: string[];
   interests: string[];
   language: string;
+  educationLevel?: string;
+  familyBackground?: string;
+  economicContext?: string;
+  culturalContext?: string;
+  careerGoals?: string;
+  familyExpectations?: string;
+  geographicConstraints?: string;
+  languagePreference?: string;
+  infrastructureLevel?: string;
 }
 
 export interface CareerMatch {
@@ -279,18 +314,53 @@ export interface EntranceExamInfo {
 }
 
 export const authAPI = {
-  login: async (data: LoginRequest) => {
+  login: async (data: LoginRequest): Promise<TokenResponse> => {
     const response = await api.post('/auth/login', data);
     return response.data;
   },
   
-  signup: async (data: SignupRequest) => {
+  signup: async (data: SignupRequest): Promise<SignupResponse> => {
     const response = await api.post('/auth/signup', data);
     return response.data;
   },
   
-  getMe: async () => {
+  getMe: async (): Promise<UserProfile> => {
     const response = await api.get('/auth/me');
+    return response.data;
+  },
+
+  createProfile: async (): Promise<{ message: string }> => {
+    const response = await api.post('/auth/create-profile');
+    return response.data;
+  },
+
+  updateProfile: async (data: { full_name?: string }): Promise<{ message: string }> => {
+    const response = await api.put('/auth/me', data);
+    return response.data;
+  },
+
+  logout: async (): Promise<{ message: string }> => {
+    const response = await api.post('/auth/logout');
+    return response.data;
+  },
+
+  refreshToken: async (refresh_token: string): Promise<TokenResponse> => {
+    const response = await api.post('/auth/refresh', { refresh_token });
+    return response.data;
+  },
+
+  resendConfirmation: async (email: string): Promise<{ message: string }> => {
+    const response = await api.post('/auth/resend-confirmation', { email });
+    return response.data;
+  },
+
+  googleSignin: async (): Promise<{ url: string; provider: string }> => {
+    const response = await api.get('/auth/google/url');
+    return response.data;
+  },
+
+  googleCallback: async (code: string): Promise<TokenResponse> => {
+    const response = await api.post('/auth/google/callback', { code });
     return response.data;
   }
 };

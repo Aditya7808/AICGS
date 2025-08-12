@@ -9,10 +9,6 @@ const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
-  const [isEventsOpen, setIsEventsOpen] = useState(false);
-  const [isBlogOpen, setIsBlogOpen] = useState(false);
-  const [isPagesOpen, setIsPagesOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -47,58 +43,6 @@ const Navbar: React.FC = () => {
               Home
             </Link>
             
-            {/* Courses Dropdown */}
-            <div className="relative group">
-              <button
-                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
-                onClick={() => setIsCoursesOpen(!isCoursesOpen)}
-              >
-                Courses
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Events Dropdown */}
-            <div className="relative group">
-              <button
-                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
-                onClick={() => setIsEventsOpen(!isEventsOpen)}
-              >
-                Events
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Blog Dropdown */}
-            <div className="relative group">
-              <button
-                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
-                onClick={() => setIsBlogOpen(!isBlogOpen)}
-              >
-                Blog
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Pages Dropdown */}
-            <div className="relative group">
-              <button
-                className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center"
-                onClick={() => setIsPagesOpen(!isPagesOpen)}
-              >
-                Pages
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-
             <Link
               to="/contact"
               className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
@@ -111,28 +55,19 @@ const Navbar: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <LanguageToggle />
             
-            {/* Search Icon */}
-            <button className="text-gray-400 hover:text-gray-600 p-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
-
-            {/* Cart Icon */}
-            <button className="relative text-gray-400 hover:text-gray-600 p-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8" />
-              </svg>
-              <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
-            </button>
-            
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
                 <Link
-                  to="/assessment"
-                  className="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  to="/mare-assessment"
+                  className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
                 >
-                  {t('navigation.assessment')}
+                  🧠 MARE AI
+                </Link>
+                <Link
+                  to="/cast-demo"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
+                >
+                  🌐 CAST AI
                 </Link>
                 <Link
                   to="/progress"
@@ -143,11 +78,11 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-r from-primary-600 to-primary-700 rounded-full flex items-center justify-center">
                     <span className="text-white font-semibold text-sm">
-                      {user?.username?.charAt(0).toUpperCase()}
+                      {user?.full_name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
                     </span>
                   </div>
                   <span className="text-gray-700 text-sm font-medium">
-                    {user?.username}
+                    {user?.full_name || user?.email}
                   </span>
                 </div>
                 <button
@@ -206,27 +141,6 @@ const Navbar: React.FC = () => {
                 Home
               </Link>
               <Link
-                to="/courses"
-                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Courses
-              </Link>
-              <Link
-                to="/events"
-                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Events
-              </Link>
-              <Link
-                to="/blog"
-                className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Blog
-              </Link>
-              <Link
                 to="/contact"
                 className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -239,20 +153,13 @@ const Navbar: React.FC = () => {
                   <div className="flex items-center space-x-3 px-3 py-2">
                     <div className="w-8 h-8 bg-gradient-to-r from-primary-600 to-primary-700 rounded-full flex items-center justify-center">
                       <span className="text-white font-semibold text-sm">
-                        {user?.username?.charAt(0).toUpperCase()}
+                        {user?.full_name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <span className="text-gray-700 font-medium">
-                      {user?.username}
+                      {user?.full_name || user?.email}
                     </span>
                   </div>
-                  <Link
-                    to="/assessment"
-                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {t('navigation.assessment')}
-                  </Link>
                   <Link
                     to="/progress"
                     className="block px-3 py-2 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"

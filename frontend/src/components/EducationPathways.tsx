@@ -26,8 +26,7 @@ interface EducationPathwaysProps {
 }
 
 const EducationPathways: React.FC<EducationPathwaysProps> = ({ 
-  careerIds,
-  userProfile 
+  careerIds
 }) => {
   const [pathways, setPathways] = useState<EducationPathway[]>([]);
   const [selectedPathway, setSelectedPathway] = useState<EducationPathway | null>(null);

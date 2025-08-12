@@ -1,0 +1,90 @@
+{
+  "common": {
+    "welcome": "স্বাগতম",
+    "login": "লগইন",
+    "signup": "সাইন আপ",
+    "logout": "লগআউট",
+    "submit": "জমা দিন",
+    "cancel": "বাতিল",
+    "next": "পরবর্তী",
+    "previous": "পূর্ববর্তী",
+    "loading": "লোড হচ্ছে...",
+    "analyzing": "বিশ্লেষণ করা হচ্ছে...",
+    "error": "ত্রুটি",
+    "success": "সফল"
+  },
+  "navigation": {
+    "home": "হোম",
+    "assessment": "মূল্যায়ন",
+    "results": "ফলাফল",
+    "profile": "প্রোফাইল"
+  },
+  "hero": {
+    "title": "আপনার নিখুঁত ক্যারিয়ার পথ আবিষ্কার করুন",
+    "subtitle": "আপনার দক্ষতা, আগ্রহ এবং অবস্থানের সাথে তৈরি AI-চালিত ক্যারিয়ার গাইডেন্স",
+    "cta": "মূল্যায়ন শুরু করুন",
+    "loginPrompt": "ইতিমধ্যে একটি অ্যাকাউন্ট আছে?"
+  },
+  "auth": {
+    "username": "ব্যবহারকারীর নাম",
+    "email": "ইমেইল",
+    "password": "পাসওয়ার্ড",
+    "loginTitle": "CareerBuddy তে সাইন ইন করুন",
+    "signupTitle": "আপনার অ্যাকাউন্ট তৈরি করুন",
+    "loginButton": "সাইন ইন",
+    "signupButton": "অ্যাকাউন্ট তৈরি করুন",
+    "switchToSignup": "অ্যাকাউন্ট নেই? সাইন আপ করুন",
+    "switchToLogin": "ইতিমধ্যে অ্যাকাউন্ট আছে? সাইন ইন করুন",
+    "loginSuccess": "সফলভাবে লগইন হয়েছে!",
+    "signupSuccess": "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!",
+    "invalidCredentials": "ভুল ব্যবহারকারীর নাম বা পাসওয়ার্ড",
+    "userExists": "ব্যবহারকারী ইতিমধ্যে বিদ্যমান"
+  },
+  "assessment": {
+    "title": "ক্যারিয়ার মূল্যায়ন",
+    "personal_info": "ব্যক্তিগত তথ্য",
+    "personal_information": "ব্যক্তিগত তথ্য",
+    "cultural_context": "সাংস্কৃতিক প্রসঙ্গ",
+    "cultural_social_context": "সাংস্কৃতিক ও সামাজিক প্রসঙ্গ",
+    "economic_geographic": "অর্থনৈতিক ও ভৌগোলিক",
+    "social_preferences": "সামাজিক পছন্দ",
+    "academic_performance": "একাডেমিক পারফরম্যান্স",
+    "skills_interests": "দক্ষতা ও আগ্রহ",
+    "career_goals": "ক্যারিয়ার লক্ষ্য",
+    "next": "পরবর্তী",
+    "previous": "পূর্ববর্তী",
+    "submit": "জমা দিন"
+  },
+  "cast_framework": {
+    "multilingual_support": "বহুভাষিক সহায়তা",
+    "cultural_adaptation": "সাংস্কৃতিক অভিযোজন",
+    "bias_detection": "পক্ষপাত শনাক্তকরণ",
+    "skills_mapping": "দক্ষতা ম্যাপিং",
+    "translation_quality": "অনুবাদের মান",
+    "cultural_sensitivity": "সাংস্কৃতিক সংবেদনশীলতা",
+    "language_preferences": "ভাষার পছন্দ",
+    "regional_adaptation": "আঞ্চলিক অভিযোজন"
+  },
+  "careers": {
+    "engineering": "প্রকৌশল",
+    "medicine": "চিকিৎসা",
+    "teaching": "শিক্ষকতা",
+    "business": "ব্যবসা",
+    "technology": "প্রযুক্তি",
+    "arts": "শিল্প",
+    "agriculture": "কৃষি",
+    "government": "সরকারি",
+    "research": "গবেষণা",
+    "social_work": "সমাজসেবা"
+  },
+  "skills": {
+    "communication": "যোগাযোগ",
+    "leadership": "নেতৃত্ব",
+    "problem_solving": "সমস্যা সমাধান",
+    "teamwork": "দলগত কাজ",
+    "creativity": "সৃজনশীলতা",
+    "analytical_thinking": "বিশ্লেষণাত্মক চিন্তা",
+    "technical_skills": "কারিগরি দক্ষতা",
+    "interpersonal_skills": "আন্তঃব্যক্তিক দক্ষতা"
+  }
+}

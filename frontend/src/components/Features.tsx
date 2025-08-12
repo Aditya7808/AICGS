@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom';
 
 const Features: React.FC = () => {
   const features = [
-    "Hand-picked authors",
-    "Easy to follow curriculum", 
-    "Free courses",
-    "Money-back guarantee"
+    "Multi-Dimensional Adaptive Recommendations (MARE)",
+    "Context-Aware Skills Translation (CAST-F)", 
+    "15+ Indian Language Support",
+    "Cultural Context Preservation",
+    "Infrastructure-Adaptive Technology (IAOP)",
+    "Privacy-Preserving Learning (HFLS)",
+    "Family Engagement Tools",
+    "Rural & Urban Specific Guidance"
   ];
 
   return (
@@ -17,10 +21,10 @@ const Features: React.FC = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                Learn new skills when and where you like
+                AI-Powered Career Guidance System (AICGS)
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Discover a world of learning opportunities with our comprehensive platform designed to help you achieve your career goals.
+                Experience India's most advanced career guidance platform with culturally-sensitive AI that adapts to your social, economic, geographic, and linguistic context.
               </p>
             </div>
 
@@ -41,10 +45,10 @@ const Features: React.FC = () => {
             {/* CTA Button */}
             <div className="pt-4">
               <Link
-                to="/signup"
+                to="/mare-assessment"
                 className="inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
-                Join Free
+                Start MARE AI Assessment
               </Link>
             </div>
           </div>

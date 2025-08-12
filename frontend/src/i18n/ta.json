@@ -1,0 +1,90 @@
+{
+  "common": {
+    "welcome": "தமிழில் வரவேற்கிறேன்",
+    "login": "உள்நுழைய",
+    "signup": "பதிவு செய்ய",
+    "logout": "வெளியேறு",
+    "submit": "சமர்பிக்கவும்",
+    "cancel": "रद्द करें",
+    "next": "அடுத்து",
+    "previous": "முந்தைய",
+    "loading": "ஏற்றுகிறது...",
+    "analyzing": "பகுப்பாய்வு செய்கிறது...",
+    "error": "பிழை",
+    "success": "வெற்றி"
+  },
+  "navigation": {
+    "home": "முகப்பு",
+    "assessment": "மதிப்பீடு",
+    "results": "முடிவுகள்",
+    "profile": "சுயவிவரம்"
+  },
+  "hero": {
+    "title": "உங்கள் சரியான தொழில் பாதையை கண்டறியுங்கள்",
+    "subtitle": "உங்கள் திறன்கள், ஆர்வங்கள் மற்றும் இடத்திற்கு ஏற்ப AI-இயங்கும் தொழில் வழிகாட்டுதல்",
+    "cta": "மதிப்பீட்டைத் தொடங்கு",
+    "loginPrompt": "ஏற்கனவே கணக்கு உள்ளதா?"
+  },
+  "auth": {
+    "username": "பயனர் பெயர்",
+    "email": "மின்னஞ்சல்",
+    "password": "கடவுச்சொல்",
+    "loginTitle": "CareerBuddy இல் உள்நுழையவும்",
+    "signupTitle": "உங்கள் கணக்கை உருவாக்கவும்",
+    "loginButton": "உள்நுழைய",
+    "signupButton": "கணக்கு உருவாக்கு",
+    "switchToSignup": "கணக்கு இல்லையா? பதிவு செய்யவும்",
+    "switchToLogin": "ஏற்கனவே கணக்கு உள்ளதா? உள்நுழையவும்",
+    "loginSuccess": "வெற்றிகரமாக உள்நுழைந்துள்ளீர்கள்!",
+    "signupSuccess": "கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது!",
+    "invalidCredentials": "தவறான பயனர்பெயர் அல்லது கடவுச்சொல்",
+    "userExists": "பயனர் ஏற்கனவே உள்ளார்"
+  },
+  "assessment": {
+    "title": "தொழில் மதிப்பீடு",
+    "personal_info": "தனிப்பட்ட தகவல்",
+    "personal_information": "தனிப்பட்ட தகவல்",
+    "cultural_context": "கலாச்சார சூழல்",
+    "cultural_social_context": "கலாச்சார மற்றும் சமூக சூழல்",
+    "economic_geographic": "பொருளாதார மற்றும் புவியியல்",
+    "social_preferences": "சமூக விருப்பங்கள்",
+    "academic_performance": "கல்வி செயல்திறன்",
+    "skills_interests": "திறன்கள் மற்றும் ஆர்வங்கள்",
+    "career_goals": "தொழில் இலக்குகள்",
+    "next": "அடுத்து",
+    "previous": "முந்தைய",
+    "submit": "சமர்பிக்கவும்"
+  },
+  "cast_framework": {
+    "multilingual_support": "பன்மொழி ஆதரவு",
+    "cultural_adaptation": "கலாச்சார தழுவல்",
+    "bias_detection": "சார்பு கண்டறிதல்",
+    "skills_mapping": "திறன் வரைபடமாக்கல்",
+    "translation_quality": "மொழிபெயர்ப்பு தரம்",
+    "cultural_sensitivity": "கலாச்சார உணர்வு",
+    "language_preferences": "மொழி விருப்பங்கள்",
+    "regional_adaptation": "பிராந்திய தழுவல்"
+  },
+  "careers": {
+    "engineering": "பொறியியல்",
+    "medicine": "மருத்துவம்",
+    "teaching": "கற்பித்தல்",
+    "business": "வணிகம்",
+    "technology": "தொழில்நுட்பம்",
+    "arts": "கலைகள்",
+    "agriculture": "விவசாயம்",
+    "government": "அரசு",
+    "research": "ஆராய்ச்சி",
+    "social_work": "சமூக சேவை"
+  },
+  "skills": {
+    "communication": "தொடர்பு",
+    "leadership": "தலைமைத்துவம்",
+    "problem_solving": "சிக்கல் தீர்க்கும்",
+    "teamwork": "குழுப்பணி",
+    "creativity": "படைப்பாற்றல்",
+    "analytical_thinking": "பகுப்பாய்வு சிந்தனை",
+    "technical_skills": "தொழில்நுட்ப திறன்கள்",
+    "interpersonal_skills": "தனிநபர் திறன்கள்"
+  }
+}

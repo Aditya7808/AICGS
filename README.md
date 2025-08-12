@@ -6,8 +6,9 @@ A comprehensive fullstack web application that provides intelligent career guida
 
 ### Backend
 - **FastAPI** - Modern, fast web framework with automatic API documentation
-- **SQLAlchemy** - Advanced ORM with SQLite database
-- **JWT Authentication** - Secure token-based authentication with role management
+- **Supabase PostgreSQL** - Scalable cloud database with real-time capabilities
+- **SQLAlchemy** - Advanced ORM with PostgreSQL adapter
+- **Supabase Auth** - Secure authentication with JWT tokens and RLS
 - **bcrypt** - Industry-standard password hashing
 - **Pydantic v2** - Enhanced data validation and serialization
 - **scikit-learn** - Machine learning algorithms for recommendation systems
@@ -59,13 +60,13 @@ careerbuddy/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/          # Reusable UI components
-│   │   │   ├── AssessmentForm.tsx      # Multi-step career assessment
+│   │   │   ├── MAREAssessmentForm.tsx  # MARE AI assessment
 │   │   │   ├── ProgressDashboard.tsx   # Progress tracking UI
 │   │   │   ├── EducationPathways.tsx   # Educational guidance
 │   │   │   ├── SkillGapAnalyzer.tsx    # Skill analysis component
 │   │   │   └── PeerIntelligence.tsx    # Peer insights component
 │   │   ├── pages/               # Page components
-│   │   │   ├── Assessment.tsx   # Career assessment page
+│   │   │   ├── MAREAssessment.tsx # MARE AI assessment page
 │   │   │   ├── Results.tsx      # Recommendation results
 │   │   │   ├── ProgressDashboard.tsx # User progress tracking
 │   │   │   └── EducationPathwaysPage.tsx # Education guidance
@@ -81,7 +82,7 @@ careerbuddy/
 │   ├── package.json           # Node.js dependencies
 │   └── tailwind.config.js     # TailwindCSS configuration
 ├── data.csv                   # Training data for ML algorithms
-├── careerbuddy.db            # SQLite database
+├── careerbuddy.db            # Supabase PostgreSQL (cloud-hosted)
 └── README.md
 ```
 
@@ -352,7 +353,27 @@ POST /recommend/v2/svm/predict
 - **Confidence Scoring** - Provides prediction confidence levels for decision making
 - **Model Retraining** - Continuous learning from new user data and outcomes
 
-#### 4. Hybrid Recommendation Engine
+#### 4. MARE (Multi-Dimensional Adaptive Recommendation Engine) 🧠
+- **Multi-Dimensional Analysis** - Considers personal, cultural, economic, geographic, and social factors
+- **Adaptive Algorithms** - Dynamic recommendation weighting based on user context
+- **Cultural Intelligence** - Culturally-aware career suggestions for diverse backgrounds
+- **Economic Context Awareness** - Recommendations considering financial constraints and family background
+- **Geographic Optimization** - Location-specific career opportunities and market analysis
+
+#### 5. Groq AI Enhancement (NEW) 🤖
+- **LLM-Powered Insights** - AI-generated personalized career advice using Groq's high-performance inference
+- **Actionable Recommendations** - Concrete next steps for career development
+- **Skill Development Plans** - AI-curated learning paths for target careers
+- **Cultural Considerations** - AI analysis of cultural fit and family expectations
+- **Timeline Guidance** - Realistic career transition timelines based on user profile
+- **Confidence Scoring** - AI confidence levels for each recommendation
+
+📚 **Groq Integration Documentation:**
+- [Groq Setup Guide](GROQ_SETUP_GUIDE.md) - Complete setup and configuration
+- [How to Access Groq Results](HOW_TO_ACCESS_GROQ_RESULTS.md) - Frontend integration guide
+- [Quick Integration](QUICK_GROQ_INTEGRATION.md) - 5-minute developer reference
+
+#### 6. Hybrid Recommendation Engine
 - **Dynamic Weight Adjustment** - Balances content-based (50%), collaborative (30%), and SVM (20%) approaches
 - **Confidence Scoring** - Provides confidence levels for each recommendation
 - **SVM-Enhanced Scoring** - Boosts recommendations aligned with SVM predictions
@@ -434,8 +455,14 @@ SECRET_KEY=your-super-secure-secret-key-here
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 # Database
-DATABASE_URL=sqlite:///./careerbuddy.db
-# For production: postgresql://user:password@localhost/careerbuddy
+# Database URL - PostgreSQL connection string for Supabase
+# Format: postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres
+DATABASE_URL=postgresql://postgres:your-db-password@db.your-project-ref.supabase.co:5432/postgres
+
+# Supabase Configuration
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 
 # API Configuration
 API_VERSION=v2.0.0
@@ -590,10 +617,11 @@ SVM_CONFIDENCE_THRESHOLD = 0.7
 ## 🚀 Deployment Architecture
 
 ### Database
-- **SQLite for Development** - Zero-configuration database for local development
-- **PostgreSQL Ready** - Production-ready database configuration
-- **Migration System** - SQLAlchemy Alembic for database versioning
-- **Backup Strategy** - Database backup and recovery procedures
+- **Supabase PostgreSQL** - Scalable cloud database with real-time subscriptions
+- **Row Level Security (RLS)** - Built-in security for user data isolation
+- **Automatic Backups** - Built-in backup and recovery with Supabase
+- **Migration System** - SQLAlchemy migrations for schema versioning
+- **Real-time Updates** - Live data synchronization capabilities
 
 ### Backend Deployment
 - **Docker Support** - Containerization ready with multi-stage builds

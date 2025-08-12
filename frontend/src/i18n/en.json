@@ -9,6 +9,7 @@
     "next": "Next",
     "previous": "Previous",
     "loading": "Loading...",
+    "analyzing": "Analyzing...",
     "error": "Error",
     "success": "Success"
   },
@@ -41,15 +42,79 @@
   },
   "assessment": {
     "title": "Career Assessment",
+    "personal_info": "Personal Information",
+    "personal_information": "Personal Information",
+    "cultural_context": "Cultural Context",
+    "cultural_social_context": "Cultural & Social Context",
+    "economic_geographic": "Economic & Geographic",
+    "social_preferences": "Social Preferences", 
+    "skills_interests": "Skills & Interests",
     "personalInfo": "Personal Information",
     "skillsInterests": "Skills & Interests",
+    "mare_title": "MARE AI Assessment",
+    "mare_subtitle": "Multi-Dimensional Adaptive Career Recommendations",
+    "get_recommendations": "Get AI Recommendations",
     "age": "Age",
+    "age_placeholder": "Enter your age",
+    "education_level": "Education Level",
+    "select_education": "Select your education level",
     "location": "Location",
+    "location_placeholder": "Enter your city, state, country",
+    "family_background": "Family Background",
+    "select_cultural_context": "Select your cultural context",
     "skills": "Skills",
     "interests": "Interests",
     "skillsPlaceholder": "Select your skills...",
     "interestsPlaceholder": "Select your interests...",
     "getRecommendations": "Get Recommendations"
+  },
+  "education": {
+    "below_10th": "Below 10th Grade",
+    "10th_pass": "10th Grade Pass",
+    "12th_pass": "12th Grade Pass",
+    "diploma": "Diploma/Certificate",
+    "bachelors": "Bachelor's Degree",
+    "masters": "Master's Degree",
+    "phd": "PhD/Doctorate",
+    "professional": "Professional Degree"
+  },
+  "cultural": {
+    "traditional": "Traditional",
+    "conservative": "Conservative",
+    "balanced": "Balanced",
+    "modern": "Modern",
+    "progressive": "Progressive"
+  },
+  "validation": {
+    "age_required": "Please enter a valid age between 13 and 100",
+    "education_required": "Please select your education level",
+    "location_required": "Please enter your location",
+    "cultural_context_required": "Please select your cultural context",
+    "family_background_required": "Please describe your family background",
+    "economic_context_required": "Please select your economic context",
+    "geographic_constraints_required": "Please specify your geographic preferences",
+    "family_expectations_required": "Please describe your family expectations",
+    "skills_required": "Please add at least one skill",
+    "interests_required": "Please add at least one interest"
+  },
+  "mare": {
+    "title": "MARE AI Career Assessment",
+    "description": "Get personalized career recommendations using our Multi-Dimensional Adaptive Recommendation Engine. Complete the comprehensive assessment to receive AI-powered insights tailored to your unique profile.",
+    "feature1": {
+      "title": "Multi-Dimensional Analysis",
+      "desc": "Analyzes 6 key dimensions: skills, culture, economics, geography, social factors, and growth potential."
+    },
+    "feature2": {
+      "title": "AI-Powered Insights", 
+      "desc": "Advanced machine learning algorithms provide highly accurate career matches based on your unique profile."
+    },
+    "feature3": {
+      "title": "Cultural Awareness",
+      "desc": "Considers your cultural context, family values, and social environment for relevant recommendations."
+    }
+  },
+  "error": {
+    "recommendation_failed": "Failed to get recommendations. Please try again."
   },
   "results": {
     "title": "Your Career Recommendations",

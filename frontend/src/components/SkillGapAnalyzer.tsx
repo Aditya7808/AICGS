@@ -7,7 +7,7 @@ interface SkillGapAnalyzerProps {
   targetCareers?: string[];
 }
 
-const SkillGapAnalyzer: React.FC<SkillGapAnalyzerProps> = ({ userId, targetCareers = [] }) => {
+const SkillGapAnalyzer: React.FC<SkillGapAnalyzerProps> = ({ userId }) => {
   const [data, setData] = useState<SkillGapResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authAPI } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
+  const { loginWithGoogle } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
-    name: '',
+    full_name: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -33,18 +35,31 @@ const Signup: React.FC = () => {
 
     try {
       // Make API call to signup
-      await authAPI.signup({
-        username: formData.name,
+      const signupResponse = await authAPI.signup({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        full_name: formData.full_name
       });
 
-      // Redirect to login page on success
-      navigate('/login', { 
-        state: { 
-          message: 'Account created successfully! Please log in.' 
-        } 
-      });
+      // Check if email verification is required
+      if (signupResponse.requires_email_verification) {
+        // Redirect to login page with email verification message
+        navigate('/login', { 
+          state: { 
+            message: signupResponse.message || 'Account created! Please check your email to verify your account before logging in.',
+            email: formData.email,
+            needsVerification: true
+          } 
+        });
+      } else {
+        // Email already confirmed, can login immediately
+        navigate('/login', { 
+          state: { 
+            message: signupResponse.message || 'Account created successfully! You can now log in.',
+            email: formData.email
+          } 
+        });
+      }
     } catch (err: any) {
       console.error('Signup error:', err);
       if (err.response?.data?.detail) {
@@ -62,6 +77,16 @@ const Signup: React.FC = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleGoogleSignup = async () => {
+    try {
+      setError('');
+      await loginWithGoogle();
+    } catch (err: any) {
+      console.error('Google sign-up error:', err);
+      setError('Failed to initiate Google sign-up. Please try again.');
+    }
   };
 
   return (
@@ -111,18 +136,17 @@ const Signup: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                Username
+              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-2">
+                Full Name
               </label>
               <input
-                id="name"
-                name="name"
+                id="full_name"
+                name="full_name"
                 type="text"
-                required
-                value={formData.name}
+                value={formData.full_name}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                placeholder="Choose a username"
+                placeholder="Enter your full name (optional)"
               />
             </div>
 
@@ -191,15 +215,7 @@ const Signup: React.FC = () => {
             <div className="space-y-3">
               <button
                 type="button"
-                className="w-full flex justify-center items-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
-              >
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                Log in via Facebook
-              </button>
-              <button
-                type="button"
+                onClick={handleGoogleSignup}
                 className="w-full flex justify-center items-center bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
               >
                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -208,7 +224,7 @@ const Signup: React.FC = () => {
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Log in via Google
+                Continue with Google
               </button>
             </div>
           </form>

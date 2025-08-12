@@ -27,8 +27,8 @@ const EducationPathwaysPage: React.FC = () => {
         navigate('/results');
       }
     } else {
-      // If no career IDs provided, redirect to assessment
-      navigate('/assessment');
+      // If no career IDs provided, redirect to MARE assessment
+      navigate('/mare-assessment');
     }
   }, [careerIds, isAuthenticated, navigate]);
 
@@ -44,10 +44,10 @@ const EducationPathwaysPage: React.FC = () => {
             <GraduationCap className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Education Pathways</h1>
             <p className="text-gray-600 mb-6">
-              Please complete the career assessment to view personalized education pathways.
+              Please complete the MARE AI assessment to view personalized education pathways.
             </p>
-            <Button onClick={() => navigate('/assessment')}>
-              Take Assessment
+            <Button onClick={() => navigate('/mare-assessment')}>
+              Take MARE Assessment
             </Button>
           </div>
         </div>
@@ -82,7 +82,7 @@ const EducationPathwaysPage: React.FC = () => {
             {user && (
               <div className="text-right">
                 <div className="text-sm text-gray-600">Welcome back,</div>
-                <div className="font-medium text-gray-900">{user.username}</div>
+                <div className="font-medium text-gray-900">{user.full_name || user.email}</div>
               </div>
             )}
           </div>
