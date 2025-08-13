@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
-  const { loginWithGoogle } = useAuth();
+  const { loginWithGoogle, loginWithSupabaseGoogle, useSupabaseDirect } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -84,7 +84,12 @@ const Signup: React.FC = () => {
       setError('');
       setIsLoading(true);
       console.log('Starting Google sign-up process...');
-      await loginWithGoogle();
+      // Use Supabase direct OAuth if available, otherwise fall back to backend
+      if (useSupabaseDirect) {
+        await loginWithSupabaseGoogle();
+      } else {
+        await loginWithGoogle();
+      }
     } catch (err: any) {
       console.error('Google sign-up error:', err);
       const errorMessage = err.message || 'Failed to initiate Google sign-up. Please try again.';

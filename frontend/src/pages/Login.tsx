@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 
 const Login: React.FC = () => {
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle, loginWithSupabaseGoogle, useSupabaseDirect } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -57,7 +57,12 @@ const Login: React.FC = () => {
   const handleGoogleSignin = async () => {
     try {
       setError('');
-      await loginWithGoogle();
+      // Use Supabase direct OAuth if available, otherwise fall back to backend
+      if (useSupabaseDirect) {
+        await loginWithSupabaseGoogle();
+      } else {
+        await loginWithGoogle();
+      }
     } catch (err: any) {
       console.error('Google sign-in error:', err);
       setError('Failed to initiate Google sign-in. Please try again.');

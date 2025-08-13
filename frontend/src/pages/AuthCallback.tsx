@@ -11,12 +11,56 @@ const AuthCallback: React.FC = () => {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        const code = searchParams.get('code');
-        const error = searchParams.get('error');
+        // Check if we have Supabase environment variables
+        const hasSupabase = Boolean(
+          import.meta.env.VITE_SUPABASE_URL && 
+          import.meta.env.VITE_SUPABASE_ANON_KEY
+        );
 
-        if (error) {
+        // Check for Supabase OAuth callback first (has access_token in hash)
+        if (hasSupabase && (window.location.hash.includes('access_token') || window.location.search.includes('code'))) {
+          try {
+            const { createClient } = await import('@supabase/supabase-js');
+            const supabase = createClient(
+              import.meta.env.VITE_SUPABASE_URL!,
+              import.meta.env.VITE_SUPABASE_ANON_KEY!
+            );
+
+            const { data, error: supabaseError } = await supabase.auth.getSession();
+
+            if (supabaseError) {
+              console.error('Supabase auth callback error:', supabaseError);
+              throw supabaseError;
+            }
+
+            if (data.session) {
+              // Store tokens
+              if (data.session.access_token) {
+                localStorage.setItem('token', data.session.access_token);
+              }
+              if (data.session.refresh_token) {
+                localStorage.setItem('refresh_token', data.session.refresh_token);
+              }
+
+              setStatus('success');
+              setTimeout(() => {
+                navigate('/dashboard', { replace: true });
+              }, 1000);
+              return;
+            }
+          } catch (supabaseError) {
+            console.warn('Supabase auth callback failed, trying backend:', supabaseError);
+            // Fall through to backend OAuth handling
+          }
+        }
+
+        // Backend OAuth callback handling
+        const code = searchParams.get('code');
+        const oauthError = searchParams.get('error');
+
+        if (oauthError) {
           setStatus('error');
-          setError(`OAuth error: ${error}`);
+          setError(`OAuth error: ${oauthError}`);
           return;
         }
 
@@ -26,7 +70,7 @@ const AuthCallback: React.FC = () => {
           return;
         }
 
-        // Exchange code for tokens
+        // Exchange code for tokens via backend
         const tokenResponse = await authAPI.googleCallback(code);
         
         // Store tokens
@@ -39,16 +83,16 @@ const AuthCallback: React.FC = () => {
           // User data will be loaded by AuthContext on next page load
           setStatus('success');
           
-          // Redirect to home after a brief delay
+          // Redirect to dashboard after a brief delay
           setTimeout(() => {
-            navigate('/', { replace: true });
+            navigate('/dashboard', { replace: true });
           }, 2000);
         } catch (profileError) {
           console.error('Failed to get user profile after OAuth:', profileError);
           // Still consider OAuth successful, user can create profile later
           setStatus('success');
           setTimeout(() => {
-            navigate('/', { replace: true });
+            navigate('/dashboard', { replace: true });
           }, 2000);
         }
 
